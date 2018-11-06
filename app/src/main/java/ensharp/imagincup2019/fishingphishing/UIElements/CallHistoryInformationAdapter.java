@@ -1,50 +1,93 @@
 package ensharp.imagincup2019.fishingphishing.UIElements;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.BaseSwipeAdapter;
+
 import java.util.List;
 
+import ensharp.imagincup2019.fishingphishing.Constants;
+import ensharp.imagincup2019.fishingphishing.Fragments.RecentsFragment;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.RecentCallVO;
 
-public class CallHistoryInformationAdapter extends ArrayAdapter<RecentCallVO> {
+public class CallHistoryInformationAdapter extends BaseSwipeAdapter {
 
     private Context context;
-    private List<RecentCallVO> callList = new ArrayList<>();
+    private List<RecentCallVO> recentCalls;
+    private View view;
+    private RecentsFragment fragment;
+    private TextView phoneNumber;
+    private TextView detail;
+    private TextView time;
 
-    public CallHistoryInformationAdapter(@NonNull Context context, ArrayList<RecentCallVO> list) {
-        super(context, 0, list);
+    public CallHistoryInformationAdapter(Context context, List<RecentCallVO> recentCalls) {
         this.context = context;
-        callList = list;
+        this.recentCalls = recentCalls;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
+    }
 
-        View listItem = convertView;
-        if (listItem == null)
-            listItem = LayoutInflater.from(context).inflate(R.layout.item_recent_call, parent, false);
+    @Override
+    public View generateView(int position, ViewGroup parent) {
+        view = LayoutInflater.from(context).inflate(R.layout.item_recent_call, null);
 
-        RecentCallVO recentCall = callList.get(position);
+        phoneNumber = view.findViewById(R.id.phone_number);
+        detail = view.findViewById(R.id.detail);
+        time = view.findViewById(R.id.time);
 
-        TextView phoneNumber = listItem.findViewById(R.id.phone_number);
-        TextView detail = (TextView) listItem.findViewById(R.id.detail);
-        TextView time = (TextView) listItem.findViewById(R.id.time);
+        return view;
+    }
 
-        phoneNumber.setText(recentCall.getPhoneNumber());
-        detail.setText(recentCall.getDetail());
-        time.setText(recentCall.getTime());
+    public void setCustomizedFragment(RecentsFragment fragment) {
+        this.fragment = fragment;
+    }
 
-        return listItem;
+    @Override
+    public void fillValues(final int position, View convertView) {
+        RecentCallVO currentCall = recentCalls.get(position);
+
+        phoneNumber.setText(currentCall.getPhoneNumber());
+        detail.setText(currentCall.getDetail());
+        time.setText(currentCall.getTime());
+
+        final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(position));
+        swipeLayout.addSwipeListener(new SimpleSwipeListener());
+
+        view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                swipeLayout.close();
+                Constants constants = Constants.getInstance();
+                constants.deleteRecentCall(position);
+                recentCalls.remove(position);
+                fragment.setListViewAdapter(recentCalls);
+            }
+        });
+    }
+
+    @Override
+    public int getCount() {
+        return recentCalls.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 }

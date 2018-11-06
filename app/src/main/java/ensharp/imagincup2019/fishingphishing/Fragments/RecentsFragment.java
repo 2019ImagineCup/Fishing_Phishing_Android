@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.swipe.util.Attributes;
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.LongToDoubleFunction;
 
+import ensharp.imagincup2019.fishingphishing.Constants;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.RecentCallVO;
 import ensharp.imagincup2019.fishingphishing.UIElements.CallHistoryInformationAdapter;
@@ -25,13 +30,14 @@ import ensharp.imagincup2019.fishingphishing.UIElements.ViewFindUtils;
 
 public class RecentsFragment extends Fragment {
 
+    private Constants constants = Constants.getInstance();
     private View view;
     private TextView title;
     private String[] titles = {"모두", "번호별로"};
     private SegmentTabLayout tabLayout;
     private ListView list;
-    ArrayList<RecentCallVO> historyList;
-    CallHistoryInformationAdapter adapter;
+    private CallHistoryInformationAdapter listViewAdapter;
+    private ArrayList<RecentCallVO> historyList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,19 +56,7 @@ public class RecentsFragment extends Fragment {
         title.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
         list = view.findViewById(R.id.list);
 
-        historyList = new ArrayList<>(
-                Arrays.asList(new RecentCallVO[] {
-                        new RecentCallVO("En# 15기 남민수", "휴대전화", "오후 9:29"),
-                        new RecentCallVO("서성범 군대", "휴대전화", "오후 9:11"),
-                        new RecentCallVO("En# 16기 김태석", "휴대전화", "오후 7:21"),
-                        new RecentCallVO("En# 15기 남민수", "휴대전화", "오후 7:21")
-                })
-        );
-
-        adapter = new CallHistoryInformationAdapter(getContext(), historyList);
-        list.setAdapter(adapter);
-        list.setDivider(null);
-        list.setDividerHeight(0);
+        historyList.addAll(constants.getRecentCalls());
 
         return view;
     }
@@ -75,31 +69,53 @@ public class RecentsFragment extends Fragment {
     }
 
     private void setHistoryList(int position) {
-        historyList.clear();
         switch (position) {
             case 0:
-                historyList = new ArrayList<>(
-                        Arrays.asList(new RecentCallVO[] {
-                                new RecentCallVO("En# 15기 남민수", "휴대전화", "오후 9:29"),
-                                new RecentCallVO("서성범 군대", "휴대전화", "오후 9:11"),
-                                new RecentCallVO("En# 16기 김태석", "휴대전화", "오후 7:21"),
-                                new RecentCallVO("En# 15기 남민수", "휴대전화", "오후 7:21")
-                        })
-                );
+                historyList.clear();
+                historyList.addAll(constants.getRecentCalls());
                 break;
             case 1:
-                historyList = new ArrayList<>(
-                        Arrays.asList(new RecentCallVO[] {
-                                new RecentCallVO("En# 15기 남민수", "휴대전화", "2 Calls"),
-                                new RecentCallVO("서성범 군대", "휴대전화", "1 Call"),
-                                new RecentCallVO("En# 16기 김태석", "휴대전화", "1 Call")
-                        })
-                );
+                ArrayList<RecentCallVO> listToCopy = new ArrayList<>();
+                listToCopy.addAll(constants.getRecentCalls());
+                historyList.clear();
+                historyList.addAll(organizeHistoryList(0, listToCopy));
                 break;
         }
 
-        adapter = new CallHistoryInformationAdapter(getContext(), historyList);
-        list.setAdapter(adapter);
+        setListViewAdapter(historyList);
+    }
+
+    private ArrayList<RecentCallVO> organizeHistoryList(int round, ArrayList<RecentCallVO> callList) {
+        if (round == callList.size()) return callList;
+
+        int count = 1;
+        ArrayList<Integer> indexList = new ArrayList<>();
+        for (int i = callList.size() - 1; i > round; i--) {
+            if (callList.get(i).getPhoneNumber().equals(callList.get(round).getPhoneNumber())) {
+                count++;
+                indexList.add(i);
+            }
+        }
+
+        String countInString;
+        if (count != 1) countInString = String.valueOf(count) + " Calls";
+        else countInString = String.valueOf(count) + " Call";
+
+        callList.set(round, new RecentCallVO(callList.get(round).getPhoneNumber(), callList.get(round).getDetail(), String.valueOf(countInString)));
+
+        for (int i = 0; i < indexList.size(); i++) {
+            callList.remove(Integer.parseInt(String.valueOf(indexList.get(i))));
+        }
+
+        round++;
+        return organizeHistoryList(round, callList);
+    }
+
+    public void setListViewAdapter(List<RecentCallVO> callLists) {
+        listViewAdapter = new CallHistoryInformationAdapter(getContext(), callLists);
+        listViewAdapter.setCustomizedFragment(this);
+        list.setAdapter(listViewAdapter);
+        listViewAdapter.setMode(Attributes.Mode.Single);
     }
 
     private OnTabSelectListener onTabSelectListener = new OnTabSelectListener() {

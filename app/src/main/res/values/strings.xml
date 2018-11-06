@@ -2,7 +2,6 @@
     <string name="app_name">FishingPhishing</string>
 
     <string name="recents_fragment_name">최근 보이스 피싱 의심 통화</string>
-    <string name="recents_fragment_edit">편집</string>
     <string name="recents_fragment_all">모두</string>
     <string name="recents_fragment_by_numbers">번호별로</string>
 </resources>

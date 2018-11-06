@@ -31,18 +31,6 @@
                 tl:tl_indicator_color="@color/main_color"
                 tl:tl_indicator_corner_radius="@dimen/recents_fragment_indicator_corner_radius" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:gravity="center_vertical|right"
-                android:background="@drawable/item_edit_button"
-                android:paddingRight="15dp"
-                android:text="@string/recents_fragment_edit"
-                android:textSize="@dimen/recents_fragment_edit_button_text_size"
-                android:textColor="@color/main_color"/>
-
-
         </FrameLayout>
 
         <TextView
