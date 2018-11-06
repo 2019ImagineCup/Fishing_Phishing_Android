@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FF0000">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@color/navigation_background">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical">
+
+            <com.flyco.tablayout.SegmentTabLayout
+                android:id="@+id/toggle_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/recents_fragment_segment_tab_layout_height"
+                android:layout_gravity="center"
+                android:paddingLeft="@dimen/recents_fragment_segment_tab_layout_padding"
+                android:paddingRight="@dimen/recents_fragment_segment_tab_layout_padding"
+                tl:tl_bar_color="@color/navigation_background"
+                tl:tl_indicator_color="@color/main_color"
+                tl:tl_indicator_corner_radius="@dimen/recents_fragment_indicator_corner_radius" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:gravity="center_vertical|right"
+                android:background="@drawable/item_edit_button"
+                android:paddingRight="15dp"
+                android:text="@string/recents_fragment_edit"
+                android:textSize="@dimen/recents_fragment_edit_button_text_size"
+                android:textColor="@color/main_color"/>
+
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:paddingLeft="@dimen/recents_fragment_title_left_padding"
+            android:paddingBottom="@dimen/recents_fragment_title_bottom_padding"
+            android:text="@string/recents_fragment_name"
+            android:textSize="@dimen/recents_fragment_title_text_size"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/seperate_line_color"/>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="4"
+        android:overScrollMode="never"
+        android:background="@android:color/white">
+
+    </ListView>
+
+</LinearLayout>

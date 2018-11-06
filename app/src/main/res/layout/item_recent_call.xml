@@ -1,48 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="15dp"
-    android:paddingLeft="35dp"
-    android:paddingRight="35dp"
-    android:background="@color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="@dimen/item_recent_call_height"
+    android:orientation="horizontal"
+    android:background="@android:color/white" >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="3dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:scaleType="fitXY"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="5dp"
-            android:layout_gravity="left"/>
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:paddingLeft="20dp"
+        android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/catetory"
+            android:id="@+id/phone_number"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/place_category"
-            android:layout_gravity="left"
-            android:fontFamily="@font/font_family"/>
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:gravity="left|bottom"
+            android:paddingBottom="1dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/item_recent_call_name_size"/>
 
         <TextView
-            android:id="@+id/information"
+            android:id="@+id/detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/place_information"
-            android:gravity="right"
-            android:lineSpacingExtra="5dp"
-            android:fontFamily="@font/font_family"/>
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:gravity="left|top"
+            android:paddingTop="1dp"
+            android:textColor="@color/grey_text_color"
+            android:textSize="@dimen/item_recent_call_detail_size"/>
 
     </LinearLayout>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:textColor="@color/grey_text_color"
+        android:textSize="@dimen/item_recent_call_time_size"/>
+
+    <ImageView
+        android:id="@+id/detail_button"
+        android:layout_width="@dimen/item_recent_call_detail_information_item_size"
+        android:layout_height="@dimen/item_recent_call_detail_information_item_size"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_detail_information"/>
+
+</LinearLayout>
