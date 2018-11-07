@@ -1,4 +1,4 @@
-package ensharp.imagincup2019.fishingphishing.Fragments;
+package ensharp.imagincup2019.fishingphishing.UI.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,10 +14,9 @@ import com.daimajia.swipe.util.Attributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ensharp.imagincup2019.fishingphishing.Constants;
+import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.R;
-import ensharp.imagincup2019.fishingphishing.UIElements.CallHistoryInformationAdapter;
-import ensharp.imagincup2019.fishingphishing.UIElements.NumberAdapter;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.NumberAdapter;
 
 public class NumbersFragment extends Fragment {
 
@@ -36,10 +35,7 @@ public class NumbersFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_numbers, container, false);
-
         list = view.findViewById(R.id.list);
-        numberList.addAll(constants.getNumbers());
-        setListViewAdapter(numberList);
 
         return view;
     }

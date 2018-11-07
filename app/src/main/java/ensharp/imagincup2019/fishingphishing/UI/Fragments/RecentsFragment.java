@@ -1,37 +1,33 @@
-package ensharp.imagincup2019.fishingphishing.Fragments;
+package ensharp.imagincup2019.fishingphishing.UI.Fragments;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.LongToDoubleFunction;
 
-import ensharp.imagincup2019.fishingphishing.Constants;
+import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.R;
-import ensharp.imagincup2019.fishingphishing.RecentCallVO;
-import ensharp.imagincup2019.fishingphishing.UIElements.CallHistoryInformationAdapter;
-import ensharp.imagincup2019.fishingphishing.UIElements.ViewFindUtils;
+import ensharp.imagincup2019.fishingphishing.Common.VO.RecentCallVO;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.CallHistoryInformationAdapter;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.ViewFindUtils;
 
 public class RecentsFragment extends Fragment {
 
     private Constants constants = Constants.getInstance();
     private View view;
+    private TextView title;
     private String[] titles = {"모두", "번호별로"};
     private SegmentTabLayout tabLayout;
     private ListView list;
@@ -46,14 +42,13 @@ public class RecentsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_recents, container, false);
-
+        view = inflater.inflate(R.layout.fragment_lists_with_segment_tab_layout, container, false);
+        title = view.findViewById(R.id.title);
+        title.setText(R.string.numbers_fragment_name);
         tabLayout = ViewFindUtils.find(view, R.id.toggle_tab);
         tabLayout.setTabData(titles);
         tabLayout.setOnTabSelectListener(onTabSelectListener);
         list = view.findViewById(R.id.list);
-
-        historyList.addAll(constants.getRecentCalls());
 
         return view;
     }

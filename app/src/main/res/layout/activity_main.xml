@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".UI.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,6 +72,29 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:text="Numbers"
+                    android:textSize="@dimen/bottom_navigation_font_size"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <ImageButton
+                    android:id="@+id/logButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/bottom_navigation_icon_height"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="@dimen/bottom_nabication_icon_margin_top"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/navigation_background"
+                    android:src="@drawable/icon_analytics_normal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="Log"
                     android:textSize="@dimen/bottom_navigation_font_size"/>
             </FrameLayout>
 

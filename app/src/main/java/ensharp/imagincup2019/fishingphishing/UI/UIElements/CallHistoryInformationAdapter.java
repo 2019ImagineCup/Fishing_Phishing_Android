@@ -1,4 +1,4 @@
-package ensharp.imagincup2019.fishingphishing.UIElements;
+package ensharp.imagincup2019.fishingphishing.UI.UIElements;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,22 +12,24 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.List;
 
-import ensharp.imagincup2019.fishingphishing.Constants;
-import ensharp.imagincup2019.fishingphishing.Fragments.NumbersFragment;
-import ensharp.imagincup2019.fishingphishing.Fragments.RecentsFragment;
+import ensharp.imagincup2019.fishingphishing.Common.Constants;
+import ensharp.imagincup2019.fishingphishing.UI.Fragments.RecentsFragment;
 import ensharp.imagincup2019.fishingphishing.R;
+import ensharp.imagincup2019.fishingphishing.Common.VO.RecentCallVO;
 
-public class NumberAdapter extends BaseSwipeAdapter {
+public class CallHistoryInformationAdapter extends BaseSwipeAdapter {
 
     private Context context;
-    private List<String> numbers;
+    private List<RecentCallVO> recentCalls;
     private View view;
-    private NumbersFragment fragment;
+    private RecentsFragment fragment;
     private TextView phoneNumber;
+    private TextView detail;
+    private TextView time;
 
-    public NumberAdapter(Context context, List<String> numbers) {
+    public CallHistoryInformationAdapter(Context context, List<RecentCallVO> recentCalls) {
         this.context = context;
-        this.numbers = numbers;
+        this.recentCalls = recentCalls;
     }
 
     @Override
@@ -37,41 +39,45 @@ public class NumberAdapter extends BaseSwipeAdapter {
 
     @Override
     public View generateView(int position, ViewGroup parent) {
-        view = LayoutInflater.from(context).inflate(R.layout.item_phone_number, null);
+        view = LayoutInflater.from(context).inflate(R.layout.item_recent_call, null);
 
         phoneNumber = view.findViewById(R.id.phone_number);
+        detail = view.findViewById(R.id.detail);
+        time = view.findViewById(R.id.time);
 
         return view;
     }
 
-    public void setCustomizedFragment(NumbersFragment fragment) {
+    public void setCustomizedFragment(RecentsFragment fragment) {
         this.fragment = fragment;
     }
 
     @Override
     public void fillValues(final int position, View convertView) {
-        String currentNumber = numbers.get(position);
+        RecentCallVO currentCall = recentCalls.get(position);
 
-        phoneNumber.setText(currentNumber);
+        phoneNumber.setText(currentCall.getPhoneNumber());
+        detail.setText(currentCall.getDetail());
+        time.setText(currentCall.getTime());
 
-        final SwipeLayout swipeLayout = view.findViewById(getSwipeLayoutResourceId(position));
+        final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener());
 
         view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 swipeLayout.close();
                 Constants constants = Constants.getInstance();
-                constants.deleteNumber(position);
-                numbers.remove(position);
-                fragment.setListViewAdapter(numbers);
+                constants.deleteRecentCall(position);
+                recentCalls.remove(position);
+                fragment.setListViewAdapter(recentCalls);
             }
         });
     }
 
     @Override
     public int getCount() {
-        return numbers.size();
+        return recentCalls.size();
     }
 
     @Override

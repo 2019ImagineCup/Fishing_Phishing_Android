@@ -1,4 +1,4 @@
-package ensharp.imagincup2019.fishingphishing.UIElements;
+package ensharp.imagincup2019.fishingphishing.UI.UIElements;
 
 import android.util.SparseArray;
 import android.view.View;

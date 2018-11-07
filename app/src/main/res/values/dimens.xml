@@ -20,4 +20,12 @@
 
     <dimen name="item_phone_number_height">50dp</dimen>
     <dimen name="item_phone_number_text_size">17sp</dimen>
+
+    <dimen name="item_call_log_height">85dp</dimen>
+    <dimen name="item_call_log_play_size">25dp</dimen>
+    <dimen name="item_call_log_adjust_button_size">15dp</dimen>
+    <dimen name="item_call_log_phone_number_size">17sp</dimen>
+    <dimen name="item_call_log_detail_size">14sp</dimen>
+    <dimen name="item_call_log_date_size">14sp</dimen>
+    <dimen name="item_call_log_time_information_size">13sp</dimen>
 </resources>

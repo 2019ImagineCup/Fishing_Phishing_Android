@@ -1,4 +1,4 @@
-package ensharp.imagincup2019.fishingphishing;
+package ensharp.imagincup2019.fishingphishing.Common.VO;
 
 public class RecentCallVO {
 
