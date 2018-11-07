@@ -15,6 +15,7 @@ public class Constants {
     }
 
     private ArrayList<RecentCallVO> recentCalls;
+    private ArrayList<String> numbers;
 
     private Constants() {
         recentCalls = new ArrayList<>(
@@ -27,6 +28,14 @@ public class Constants {
                         new RecentCallVO("En# 16기 김태석", "휴대전화", "오후 6:00")
                 })
         );
+
+        numbers = new ArrayList<>(
+                Arrays.asList(new String[] {
+                    "010-1111-1111",
+                    "010-2222-2222",
+                    "010-3333-3333"
+                })
+        );
     }
 
     public void deleteRecentCall(int position) {
@@ -35,5 +44,13 @@ public class Constants {
 
     public ArrayList<RecentCallVO> getRecentCalls() {
         return recentCalls;
+    }
+
+    public void deleteNumber(int position) {
+        numbers.remove(position);
+    }
+
+    public ArrayList<String> getNumbers() {
+        return numbers;
     }
 }

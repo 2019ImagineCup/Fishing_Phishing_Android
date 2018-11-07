@@ -32,7 +32,6 @@ public class RecentsFragment extends Fragment {
 
     private Constants constants = Constants.getInstance();
     private View view;
-    private TextView title;
     private String[] titles = {"모두", "번호별로"};
     private SegmentTabLayout tabLayout;
     private ListView list;
@@ -52,8 +51,6 @@ public class RecentsFragment extends Fragment {
         tabLayout = ViewFindUtils.find(view, R.id.toggle_tab);
         tabLayout.setTabData(titles);
         tabLayout.setOnTabSelectListener(onTabSelectListener);
-        title = view.findViewById(R.id.title);
-        title.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
         list = view.findViewById(R.id.list);
 
         historyList.addAll(constants.getRecentCalls());
@@ -111,8 +108,8 @@ public class RecentsFragment extends Fragment {
         return organizeHistoryList(round, callList);
     }
 
-    public void setListViewAdapter(List<RecentCallVO> callLists) {
-        listViewAdapter = new CallHistoryInformationAdapter(getContext(), callLists);
+    public void setListViewAdapter(List<RecentCallVO> callList) {
+        listViewAdapter = new CallHistoryInformationAdapter(getContext(), callList);
         listViewAdapter.setCustomizedFragment(this);
         list.setAdapter(listViewAdapter);
         listViewAdapter.setMode(Attributes.Mode.Single);
