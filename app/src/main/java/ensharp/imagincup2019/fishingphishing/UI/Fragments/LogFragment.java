@@ -1,33 +1,26 @@
 package ensharp.imagincup2019.fishingphishing.UI.Fragments;
 
 import android.os.Bundle;
-import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.telecom.Call;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.daimajia.swipe.util.Attributes;
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
-import ensharp.imagincup2019.fishingphishing.Common.VO.RecentCallVO;
-import ensharp.imagincup2019.fishingphishing.UI.UIElements.CallLogAdapter;
-import ensharp.imagincup2019.fishingphishing.UI.UIElements.NumberAdapter;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.AnalysisAdapter;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.DividerItemDecoration;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.ViewFindUtils;
 
 public class LogFragment extends Fragment {
@@ -36,8 +29,8 @@ public class LogFragment extends Fragment {
     private View view;
     private String[] titles = {"모두", "번호별로"};
     private SegmentTabLayout tabLayout;
-    private ListView list;
-    private CallLogAdapter listViewAdapter;
+    private RecyclerView list;
+    private AnalysisAdapter listViewAdapter;
     private ArrayList<CallLogVO> logList = new ArrayList<>();
 
     @Override
@@ -52,7 +45,10 @@ public class LogFragment extends Fragment {
         tabLayout = ViewFindUtils.find(view, R.id.toggle_tab);
         tabLayout.setTabData(titles);
         tabLayout.setOnTabSelectListener(onTabSelectListener);
+
         list = view.findViewById(R.id.list);
+        list.addItemDecoration(new DividerItemDecoration(getContext()));
+        list.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
     }
@@ -81,6 +77,11 @@ public class LogFragment extends Fragment {
         setListViewAdapter(logList);
     }
 
+    public void setListViewAdapter(List<CallLogVO> logList) {
+        listViewAdapter = new AnalysisAdapter(logList, this);
+        list.setAdapter(listViewAdapter);
+    }
+
     private ArrayList<CallLogVO> organizeLogList(int round, ArrayList<CallLogVO> logList) {
         if (round == logList.size()) return logList;
 
@@ -105,13 +106,6 @@ public class LogFragment extends Fragment {
 
         round += count;
         return organizeLogList(round, logList);
-    }
-
-    public void setListViewAdapter(List<CallLogVO> logList) {
-        listViewAdapter = new CallLogAdapter(getContext(), logList);
-        listViewAdapter.setCustomizedFragment(this);
-        list.setAdapter(listViewAdapter);
-        listViewAdapter.setMode(Attributes.Mode.Single);
     }
 
     private OnTabSelectListener onTabSelectListener = new OnTabSelectListener() {

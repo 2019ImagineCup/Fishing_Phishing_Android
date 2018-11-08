@@ -51,7 +51,7 @@
         android:layout_height="1dp"
         android:background="@color/seperate_line_color"/>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="1dp"
