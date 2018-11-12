@@ -1,6 +1,8 @@
 package ensharp.imagincup2019.fishingphishing.UI.Fragments;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,14 +16,22 @@ import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import ensharp.imagincup2019.fishingphishing.Call.CallHistory;
+import ensharp.imagincup2019.fishingphishing.Call.CallHistoryModule;
+import ensharp.imagincup2019.fishingphishing.Call.CurrentCallDate;
 import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.AnalysisAdapter;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.DividerItemDecoration;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.ViewFindUtils;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 public class LogFragment extends Fragment {
 

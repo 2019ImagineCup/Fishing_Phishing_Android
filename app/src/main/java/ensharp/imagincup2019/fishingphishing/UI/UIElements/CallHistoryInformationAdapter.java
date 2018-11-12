@@ -10,24 +10,26 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-import ensharp.imagincup2019.fishingphishing.Common.Constants;
+import ensharp.imagincup2019.fishingphishing.Call.CallHistory;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.RecentsFragment;
 import ensharp.imagincup2019.fishingphishing.R;
-import ensharp.imagincup2019.fishingphishing.Common.VO.RecentCallVO;
 
 public class CallHistoryInformationAdapter extends BaseSwipeAdapter {
 
     private Context context;
-    private List<RecentCallVO> recentCalls;
-    private View view;
+    private List<CallHistory> recentCalls;
     private RecentsFragment fragment;
     private TextView phoneNumber;
     private TextView detail;
     private TextView time;
 
-    public CallHistoryInformationAdapter(Context context, List<RecentCallVO> recentCalls) {
+    public CallHistoryInformationAdapter(Context context, List<CallHistory> recentCalls) {
         this.context = context;
         this.recentCalls = recentCalls;
     }
@@ -39,13 +41,7 @@ public class CallHistoryInformationAdapter extends BaseSwipeAdapter {
 
     @Override
     public View generateView(int position, ViewGroup parent) {
-        view = LayoutInflater.from(context).inflate(R.layout.item_recent_call, null);
-
-        phoneNumber = view.findViewById(R.id.phone_number);
-        detail = view.findViewById(R.id.detail);
-        time = view.findViewById(R.id.time);
-
-        return view;
+        return LayoutInflater.from(context).inflate(R.layout.item_recent_call, null);
     }
 
     public void setCustomizedFragment(RecentsFragment fragment) {
@@ -53,26 +49,57 @@ public class CallHistoryInformationAdapter extends BaseSwipeAdapter {
     }
 
     @Override
-    public void fillValues(final int position, View convertView) {
-        RecentCallVO currentCall = recentCalls.get(position);
+    public void fillValues(final int position, final View convertView) {
+        final CallHistory currentCall = recentCalls.get(position);
+
+        phoneNumber = convertView.findViewById(R.id.phone_number);
+        detail = convertView.findViewById(R.id.detail);
+        time = convertView.findViewById(R.id.time);
 
         phoneNumber.setText(currentCall.getPhoneNumber());
-        detail.setText(currentCall.getDetail());
-        time.setText(currentCall.getTime());
+//        detail.setText(currentCall.getPhoneType());
+        detail.setText("휴대전화");
+        setDisplayedTime(currentCall);
 
-        final SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(getSwipeLayoutResourceId(position));
+        final SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener());
 
-        view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 swipeLayout.close();
-                Constants constants = Constants.getInstance();
-                constants.deleteRecentCall(position);
-                recentCalls.remove(position);
                 fragment.setListViewAdapter(recentCalls);
+                fragment.removeCallHistory(recentCalls.get(position).getDate());
+                recentCalls.remove(position);
             }
         });
+    }
+
+    public void setDisplayedTime(CallHistory currentCall) {
+        if (currentCall.getDate() == null) {
+            time.setText(currentCall.getCount());
+            return;
+        }
+
+        Date now = new Date();
+        Date call = currentCall.getDate();
+        long timeDifference = now.getTime() - call.getTime();
+        long dayDifference = timeDifference / (24 * 60 * 60 * 1000);
+        dayDifference = Math.abs(dayDifference);
+
+        SimpleDateFormat format;
+        if (dayDifference > 7) {
+            format = new SimpleDateFormat("yyyy. MM. dd");
+            time.setText(format.format(call));
+        } else if (dayDifference > 1) {
+            format = new SimpleDateFormat("E", new Locale("en", "US"));
+            time.setText(format.format(call));
+        } else if (dayDifference == 1) {
+            time.setText("Yesterday");
+        } else {
+            format = new SimpleDateFormat("a hh:mm", new Locale("en", "US"));
+            time.setText(format.format(call));
+        }
     }
 
     @Override

@@ -1,11 +1,16 @@
 package ensharp.imagincup2019.fishingphishing.Common;
 
+import android.content.Context;
+import android.provider.Settings;
+import android.telecom.Call;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
+import ensharp.imagincup2019.fishingphishing.Call.CallHistory;
 import ensharp.imagincup2019.fishingphishing.Common.VO.AnalysisVO;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
-import ensharp.imagincup2019.fishingphishing.Common.VO.RecentCallVO;
 
 public class Constants {
     private static final Constants ourInstance = new Constants();
@@ -14,21 +19,10 @@ public class Constants {
         return ourInstance;
     }
 
-    private ArrayList<RecentCallVO> recentCalls;
     private ArrayList<String> numbers;
     private ArrayList<CallLogVO> logs;
 
     private Constants() {
-        recentCalls = new ArrayList<>(
-                Arrays.asList(new RecentCallVO[] {
-                        new RecentCallVO("김예진", "휴대전화", "오후 9:29"),
-                        new RecentCallVO("전세영", "휴대전화", "오후 9:11"),
-                        new RecentCallVO("이다인", "휴대전화", "오후 7:21"),
-                        new RecentCallVO("김예진", "휴대전화", "오후 7:21"),
-                        new RecentCallVO("김예진", "휴대전화", "오후 6:58"),
-                        new RecentCallVO("이다인", "휴대전화", "오후 6:00")
-                })
-        );
 
         numbers = new ArrayList<>(
                 Arrays.asList(new String[] {
@@ -50,14 +44,6 @@ public class Constants {
         );
     }
 
-    public void deleteRecentCall(int position) {
-        recentCalls.remove(position);
-    }
-
-    public ArrayList<RecentCallVO> getRecentCalls() {
-        return recentCalls;
-    }
-
     public void deleteNumber(int position) {
         numbers.remove(position);
     }
@@ -72,5 +58,9 @@ public class Constants {
 
     public void deleteLog(int position) {
         logs.remove(position);
+    }
+
+    public String getAndroid_id(Context context) {
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 }

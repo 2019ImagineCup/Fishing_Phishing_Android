@@ -3,7 +3,7 @@ package ensharp.imagincup2019.fishingphishing.Common.VO;
 public class CallLogVO {
 
     private String phoneNumber;
-    private String detail;
+    private String detail;  // 수신/발신/부재중 등
     private String date;
     private String time;
     private String category;
@@ -13,12 +13,12 @@ public class CallLogVO {
 
     public CallLogVO(String phoneNumber, String detail, String date, String time, String category, String period, String record, AnalysisVO analysis) {
         this.phoneNumber = phoneNumber;
-        this.detail = detail;
+        this.detail = detail; // phoneType(수신/발신/부재중 등)
         this.date = date;
         this.time = time;
-        this.category = category;
-        this.period = period;
-        this.record = record;
+        this.category = category;   // callType(수신/발신/부재중 등)
+        this.period = period;       // duration
+        this.record = record;       // audio record file
         this.analysis = analysis;
     }
 

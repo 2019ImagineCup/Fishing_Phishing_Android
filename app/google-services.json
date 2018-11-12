@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "449750997899",
+    "firebase_url": "https://fishingphishing.firebaseio.com",
+    "project_id": "fishingphishing",
+    "storage_bucket": "fishingphishing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449750997899:android:5a57704023448657",
+        "android_client_info": {
+          "package_name": "ensharp.imagincup2019.fishingphishing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449750997899-vegjg5engil5b7s4iu21t6nmt5jni0au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_3-dapZ8SrCe0FBjmdgTxKaTpqsfRW2M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
