@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import ensharp.imagincup2019.fishingphishing.Call.CallHistory;
+import ensharp.imagincup2019.fishingphishing.Common.Model.CallHistory;
 import ensharp.imagincup2019.fishingphishing.Common.VO.AnalysisVO;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 

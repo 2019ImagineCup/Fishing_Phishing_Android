@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import ensharp.imagincup2019.fishingphishing.Call.CallHistory;
+import ensharp.imagincup2019.fishingphishing.Common.Model.CallHistory;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.RecentsFragment;
 import ensharp.imagincup2019.fishingphishing.R;
 

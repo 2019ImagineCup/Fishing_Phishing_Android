@@ -1,4 +1,4 @@
-package ensharp.imagincup2019.fishingphishing.Call;
+package ensharp.imagincup2019.fishingphishing.Common.Model;
 
 import java.util.Date;
 
