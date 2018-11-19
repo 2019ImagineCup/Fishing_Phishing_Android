@@ -53,6 +53,9 @@ dependencies {
 
     // For Realm
     implementation 'io.realm:android-adapters:2.0.0'
+
+    // For Sticky Headers
+    implementation 'se.emilsjolander:stickylistheaders:2.7.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

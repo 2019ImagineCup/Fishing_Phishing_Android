@@ -10,6 +10,7 @@ public class CallLogVO {
     private String period;
     private String record;
     private AnalysisVO analysis;
+    private int tag;
 
     public CallLogVO(String phoneNumber, String detail, String date, String time, String category, String period, String record, AnalysisVO analysis) {
         this.phoneNumber = phoneNumber;
@@ -63,5 +64,13 @@ public class CallLogVO {
 
     public AnalysisVO getAnalysis() {
         return analysis;
+    }
+
+    public int getTag() {
+        return tag;
+    }
+
+    public void setTag(int tag) {
+        this.tag = tag;
     }
 }

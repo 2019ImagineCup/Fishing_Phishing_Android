@@ -20,8 +20,12 @@ import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.AnalysisAdapter;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.AnimationExecutor;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.DividerItemDecoration;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.StickyAdapter;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.ViewFindUtils;
+import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class LogFragment extends Fragment {
 
@@ -30,7 +34,10 @@ public class LogFragment extends Fragment {
     private String[] titles = {"모두", "번호별로"};
     private SegmentTabLayout tabLayout;
     private RecyclerView list;
+    private ExpandableStickyListHeadersListView stickyList;
     private AnalysisAdapter listViewAdapter;
+    private StickyAdapter stickyAdapter;
+
     private ArrayList<CallLogVO> logList = new ArrayList<>();
 
     @Override
@@ -46,9 +53,12 @@ public class LogFragment extends Fragment {
         tabLayout.setTabData(titles);
         tabLayout.setOnTabSelectListener(onTabSelectListener);
 
-        list = view.findViewById(R.id.list);
+        list = view.findViewById(R.id.list_normal_recycler_view);
         list.addItemDecoration(new DividerItemDecoration(getContext()));
         list.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        stickyList = view.findViewById(R.id.list_with_sticky_headers);
+        stickyList.setAnimExecutor(new AnimationExecutor());
 
         return view;
     }
@@ -65,34 +75,48 @@ public class LogFragment extends Fragment {
             case 0:
                 logList.clear();
                 logList.addAll(constants.getLogs());
+                setListViewAdapter(logList);
                 break;
             case 1:
                 ArrayList<CallLogVO> listToCopy = new ArrayList<>();
                 listToCopy.addAll(constants.getLogs());
                 logList.clear();
                 logList.addAll(organizeLogList(0, listToCopy));
+                setStickyListAdapter(logList);
                 break;
         }
-
-        setListViewAdapter(logList);
     }
 
     public void setListViewAdapter(List<CallLogVO> logList) {
         listViewAdapter = new AnalysisAdapter(logList, this);
         list.setAdapter(listViewAdapter);
+        list.setVisibility(View.VISIBLE);
+        stickyList.setVisibility(View.GONE);
+    }
+
+    public void setStickyListAdapter(List<CallLogVO> logList) {
+        stickyAdapter = new StickyAdapter(getContext(), this, logList);
+        stickyList.setAdapter(stickyAdapter);
+        stickyList.setVisibility(View.VISIBLE);
+        list.setVisibility(View.GONE);
     }
 
     private ArrayList<CallLogVO> organizeLogList(int round, ArrayList<CallLogVO> logList) {
         if (round == logList.size()) return logList;
 
         int count = 1;
+        CallLogVO newLog;
         ArrayList<Integer> indexList = new ArrayList<>();
         ArrayList<CallLogVO> listToCopy = new ArrayList<>();
+
+        logList.get(round).setTag(round);
         for (int i = logList.size() - 1; i > round; i--) {
             if (logList.get(i).getPhoneNumber().equals(logList.get(round).getPhoneNumber())) {
                 count++;
                 indexList.add(i);
-                listToCopy.add(new CallLogVO(logList.get(i)));
+                newLog = new CallLogVO(logList.get(i));
+                newLog.setTag(round);
+                listToCopy.add(newLog);
             }
         }
 
@@ -119,4 +143,6 @@ public class LogFragment extends Fragment {
 
         }
     };
+
+
 }

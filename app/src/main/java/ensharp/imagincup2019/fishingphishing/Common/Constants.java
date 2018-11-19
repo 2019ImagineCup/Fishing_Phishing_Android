@@ -39,7 +39,7 @@ public class Constants {
                         new CallLogVO("이다인", "휴대전화", "2018년 11월 5일", "오후 7:21", "부재중 전화", "", "", new AnalysisVO()),
                         new CallLogVO("김예진", "휴대전화", "2018년 11월 5일", "오후 7:21", "착신 통화", "19초", "", new AnalysisVO()),
                         new CallLogVO("김예진", "휴대전화", "2018년 11월 5일", "오후 6:58", "부재중 전화", "", "", new AnalysisVO()),
-                        new CallLogVO("이다인", "휴대전화", "2018년 11월 5일", "오후 6:00", "착신 통화", "10분 1초", "", new AnalysisVO())
+                        new CallLogVO("전세영", "휴대전화", "2018년 11월 5일", "오후 6:00", "착신 통화", "10분 1초", "", new AnalysisVO())
                 })
         );
     }

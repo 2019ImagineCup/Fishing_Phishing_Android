@@ -52,11 +52,21 @@
         android:background="@color/seperate_line_color"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+        android:id="@+id/list_normal_recycler_view"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="4"
         android:overScrollMode="never"
         android:background="@android:color/white" />
+
+    <se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView
+        android:id="@+id/list_with_sticky_headers"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="4"
+        android:overScrollMode="never"
+        android:background="@android:color/white"/>
 
 </LinearLayout>
