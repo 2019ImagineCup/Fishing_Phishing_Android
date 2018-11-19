@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.INTERNET,
                 Manifest.permission.READ_CALL_LOG,
                 Manifest.permission.READ_CONTACTS,
-                Manifest.permission.WRITE_CONTACTS
+                Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.RECORD_AUDIO
         };
 
         ActivityCompat.requestPermissions(this, neededPermissions,0);

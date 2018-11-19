@@ -21,41 +21,40 @@ android {
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     // For Tab
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.flyco.roundview:FlycoRoundView_Lib:1.1.2@aar'
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0@aar'
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
-
     // For Swipe Tab View
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
-
     // For Expanded Tab
-    implementation "com.android.support:recyclerview-v7:28.0.0"
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
-
     // For Firebase
     implementation 'com.firebase:firebase-client-android:2.4.1+'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-firestore:11.4.2'
-
     // For Realm
     implementation 'io.realm:android-adapters:2.0.0'
-
     // For Sticky Headers
     implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+    implementation 'com.microsoft.cognitiveservices.speech:client-sdk:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
