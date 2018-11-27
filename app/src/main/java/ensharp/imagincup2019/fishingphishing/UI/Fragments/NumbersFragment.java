@@ -1,6 +1,8 @@
 package ensharp.imagincup2019.fishingphishing.UI.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.widget.ListView;
 
 import com.daimajia.swipe.util.Attributes;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,14 @@ public class NumbersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_numbers, container, false);
         list = view.findViewById(R.id.list);
+
+//        File storageDir = new File(
+//                Environment.getExternalStoragePublicDirectory(
+//                        Environment.DIRECTORY_PICTURES
+//                ),
+//                "album na"
+//        )
+
 
         return view;
     }

@@ -8,4 +8,7 @@
     <string name="numbers_fragment_name">보이스 피싱 의심번호 관리</string>
 
     <string name="log_fragment_name">분석 기록 관리</string>
+
+    <string name="speech_subscription_key">5d59cc81db784d00b1a5c830815404d4</string>
+    <string name="speech_region">westus</string>
 </resources>

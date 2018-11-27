@@ -54,6 +54,7 @@ dependencies {
     implementation 'io.realm:android-adapters:2.0.0'
     // For Sticky Headers
     implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+    // For Speech SDK
     implementation 'com.microsoft.cognitiveservices.speech:client-sdk:1.1.0'
 }
 
