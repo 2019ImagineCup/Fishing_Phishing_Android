@@ -57,7 +57,7 @@ public class CallFragment extends Fragment {
                 Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
 
                 Intent intent=new Intent(getActivity(), CallActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });

@@ -9,20 +9,11 @@
     android:orientation="vertical">
 
     <ImageButton
-        android:id="@+id/button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:src="@drawable/icon_call_clicked"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"/>
-
-    <ImageButton
         android:id="@+id/recognize_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:src="@drawable/icon_call_normal"
+        android:src="@drawable/icon_call_clicked"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"/>
 

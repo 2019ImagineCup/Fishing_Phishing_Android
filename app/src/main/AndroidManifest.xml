@@ -24,7 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.CallActivity" />
+        <activity android:name=".UI.CallActivity"
+            android:noHistory="true"/>
     </application>
 
 </manifest>

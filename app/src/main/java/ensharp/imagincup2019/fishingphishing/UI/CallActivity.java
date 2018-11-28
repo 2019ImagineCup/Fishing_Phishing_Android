@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,9 +32,18 @@ public class CallActivity extends AppCompatActivity {
 
     private static final String SpeechSubscriptionKey = "5d59cc81db784d00b1a5c830815404d4";
     private static final String SpeechRegion = "westus";
-    private ImageButton button;
+
     private ImageButton recognizeContinuousButton;
     private TextView recognizedTextView;
+
+    private SpeechConfig speechConfig;
+
+    private static final String logTag = "reco 3";
+    private boolean continuousListeningStarted = false;
+    private SpeechRecognizer reco = null;
+    private AudioConfig audioInput = null;
+    private String buttonText = "";
+    private ArrayList<String> content = new ArrayList<>();
 
     private MicrophoneStream microphoneStream;
     private MicrophoneStream createMicrophoneStream() {
@@ -51,102 +61,25 @@ public class CallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
 
+        recognizeContinuousButton = findViewById(R.id.recognize_button);
+        recognizeContinuousButton.setOnClickListener(onRecognizeButtonClickListener);
         recognizedTextView = findViewById(R.id.recognizedText);
 
-        button = findViewById(R.id.button);
-        recognizeContinuousButton = findViewById(R.id.recognize_button);
+        createConfig();
+        clearTextBox();
 
-        final SpeechConfig speechConfig;
+        sendToServer("", 0);
+        recognizeSpeech();
+    }
+
+    private void createConfig() {
         try {
             speechConfig = SpeechConfig.fromSubscription(SpeechSubscriptionKey, SpeechRegion);
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             displayException(ex);
             return;
         }
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "clicked", Toast.LENGTH_SHORT).show();
-
-
-
-//                Intent intent=new Intent(CallActivity.this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                startActivity(intent);
-                finish();
-            }
-        });
-
-        recognizeContinuousButton.setOnClickListener(new View.OnClickListener() {
-
-            private static final String logTag = "reco 3";
-            private boolean continuousListeningStarted = false;
-            private SpeechRecognizer reco = null;
-            private AudioConfig audioInput = null;
-            private String buttonText = "";
-            private ArrayList<String> content = new ArrayList<>();
-
-            @Override
-            public void onClick(View v) {
-                disableButtons();
-                if (continuousListeningStarted) {
-                    if (reco != null) {
-                        final Future<Void> task = reco.stopContinuousRecognitionAsync();
-                        setOnTaskCompletedListener(task, result -> {
-                            Log.i(logTag, "Continuous recognition stopped.");
-                            sendToServer(recognizedTextView.getText().toString(), 2);
-                            CallActivity.this.runOnUiThread(() -> {
-                                recognizeContinuousButton.setImageResource(R.drawable.icon_call_normal);
-                            });
-                            enableButtons();
-                            continuousListeningStarted = false;
-                        });
-                    } else {
-                        continuousListeningStarted = false;
-                    }
-                } else {
-                    sendToServer("", 0);
-                }
-
-                clearTextBox();
-
-                try {
-                    content.clear();
-
-                    // audioInput = AudioConfig.fromDefaultMicrophoneInput();
-                    audioInput = AudioConfig.fromStreamInput(createMicrophoneStream());
-                    reco = new SpeechRecognizer(speechConfig, audioInput);
-
-                    reco.recognizing.addEventListener((o, speechRecognitionResultEventArgs) -> {
-                        final String s = speechRecognitionResultEventArgs.getResult().getText();
-                        Log.i(logTag, "Intermediate result received: " + s);
-                        content.add(s);
-                        setRecognizedText(TextUtils.join(" ", content));
-                        content.remove(content.size() - 1);
-                    });
-
-                    reco.recognized.addEventListener((o, speechRecognitionResultEventArgs) -> {
-                        final String s = speechRecognitionResultEventArgs.getResult().getText();
-                        Log.i(logTag, "Final result received: " + s);
-                        content.add(s);
-                        setRecognizedText(TextUtils.join(" ", content));
-                        sendToServer(TextUtils.join(" ", content), 1);
-                    });
-
-                    final Future<Void> task = reco.startContinuousRecognitionAsync();
-                    setOnTaskCompletedListener(task, result -> {
-                        continuousListeningStarted = true;
-                        CallActivity.this.runOnUiThread(() -> {
-                            recognizeContinuousButton.setImageResource(R.drawable.icon_call_clicked);
-                            recognizeContinuousButton.setEnabled(true);
-                        });
-                    });
-                } catch (Exception ex) {
-                    displayException(ex);
-                }
-            }
-        });
     }
 
     private void sendToServer(String textToSend, int flag) {
@@ -196,13 +129,13 @@ public class CallActivity extends AppCompatActivity {
 
     private void disableButtons() {
         CallActivity.this.runOnUiThread(() -> {
-            button.setEnabled(false);
+            recognizeContinuousButton.setEnabled(false);
         });
     }
 
     private void enableButtons() {
         CallActivity.this.runOnUiThread(() -> {
-            button.setEnabled(true);
+            recognizeContinuousButton.setEnabled(true);
         });
     }
 
@@ -225,9 +158,68 @@ public class CallActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        Intent intent=new Intent(CallActivity.this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        startActivity(intent);
         finish();
     }
+
+    private void recognizeSpeech() {
+        try {
+            content.clear();
+
+            audioInput = AudioConfig.fromDefaultMicrophoneInput();
+//            audioInput = AudioConfig.fromStreamInput(createMicrophoneStream());
+            reco = new SpeechRecognizer(speechConfig, audioInput);
+
+            reco.recognizing.addEventListener((o, speechRecognitionResultEventArgs) -> {
+                final String s = speechRecognitionResultEventArgs.getResult().getText();
+                Log.i(logTag, "Intermediate result received: " + s);
+                content.add(s);
+                setRecognizedText(TextUtils.join(" ", content));
+                content.remove(content.size() - 1);
+            });
+
+            reco.recognized.addEventListener((o, speechRecognitionResultEventArgs) -> {
+                final String s = speechRecognitionResultEventArgs.getResult().getText();
+                Log.i(logTag, "Final result received: " + s);
+                content.add(s);
+                setRecognizedText(TextUtils.join(" ", content));
+                sendToServer(TextUtils.join(" ", content), 1);
+            });
+
+            final Future<Void> task = reco.startContinuousRecognitionAsync();
+            setOnTaskCompletedListener(task, result -> {
+                continuousListeningStarted = true;
+                CallActivity.this.runOnUiThread(() -> {
+                    recognizeContinuousButton.setImageResource(R.drawable.icon_call_clicked);
+                    recognizeContinuousButton.setEnabled(true);
+                });
+            });
+        } catch (Exception ex) {
+            displayException(ex);
+        }
+    }
+
+    private View.OnClickListener onRecognizeButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            final Button clickedButton = (Button) view;
+            disableButtons();
+            if (continuousListeningStarted) {
+                if (reco != null) {
+                    final Future<Void> task = reco.stopContinuousRecognitionAsync();
+                    setOnTaskCompletedListener(task, result -> {
+                        Log.i(logTag, "Continuous recognition stopped.");
+                        sendToServer(recognizedTextView.getText().toString(), 2);
+                        CallActivity.this.runOnUiThread(() -> {
+                            recognizeContinuousButton.setImageResource(R.drawable.icon_call_normal);
+                            finish();
+                        });
+                        enableButtons();
+                        continuousListeningStarted = false;
+                    });
+                } else {
+                    continuousListeningStarted = false;
+                }
+            }
+        }
+    };
 }
