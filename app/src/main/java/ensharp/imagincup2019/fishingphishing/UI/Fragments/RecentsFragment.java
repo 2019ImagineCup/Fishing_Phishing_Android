@@ -1,11 +1,15 @@
 package ensharp.imagincup2019.fishingphishing.UI.Fragments;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CallLog;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.telecom.Call;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +38,8 @@ import io.realm.RealmResults;
 
 public class RecentsFragment extends Fragment {
 
+    private String TAG = "RecentsFragment";
+
     private View view;
     private TextView title;
     private String[] titles = {"모두", "번호별로"};
@@ -42,9 +48,21 @@ public class RecentsFragment extends Fragment {
     private CallHistoryInformationAdapter listViewAdapter;
     private ArrayList<CallHistory> historyList = new ArrayList<>();
 
+    private RealmConfiguration callHistoryConfig;
+    private Realm historyRealm;
+
+    private boolean isInitialized = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Realm.init(getContext());
+        callHistoryConfig = new RealmConfiguration.Builder()
+                .name("history.realm")
+                .modules(new CallHistoryModule())
+                .build();
+        historyRealm = Realm.getInstance(callHistoryConfig);
     }
 
     @Nullable
@@ -58,8 +76,6 @@ public class RecentsFragment extends Fragment {
         tabLayout.setOnTabSelectListener(onTabSelectListener);
         list = view.findViewById(R.id.list);
 
-        Realm.init(getContext());
-
         return view;
     }
 
@@ -70,15 +86,21 @@ public class RecentsFragment extends Fragment {
         setHistoryList(tabLayout.getCurrentTab());
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+//        historyRealm.close();
+    }
+
     private void setHistoryList(int position) {
         switch (position) {
             case 0:
-                historyList.clear();
-                historyList.addAll(getAllCallHistories());
+                getAllCallHistories();
                 break;
             case 1:
                 historyList.clear();
-                historyList.addAll(organizeHistoryList(0, getAllCallHistories()));
+                historyList.addAll(organizeHistoryList(0, historyList));
                 break;
         }
 
@@ -130,110 +152,55 @@ public class RecentsFragment extends Fragment {
         }
     };
 
-    public ArrayList<CallHistory> getAllCallHistories() {
+    public void getAllCallHistories() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", 0);
 
-        Cursor managedCursor = getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, null);
-        int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
-        int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
-        int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-        int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-
-        RealmConfiguration callHistoryConfig = new RealmConfiguration.Builder()
-                .name("history.realm")
-                .modules(new CallHistoryModule())
-                .build();
-
-        Realm historyRealm = Realm.getInstance(callHistoryConfig);
-
-        final Date currentSynchronizedTime;
-        if (historyRealm.where(CurrentCallDate.class).count() == 0){
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, 2000);
-            cal.set(Calendar.MONTH, Calendar.JANUARY);
-            cal.set(Calendar.DAY_OF_MONTH, 0);
-            cal.set(Calendar.HOUR, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            currentSynchronizedTime = cal.getTime();
-            historyRealm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    CurrentCallDate currentCallDate = realm.createObject(CurrentCallDate.class);
-                    currentCallDate.setDate(currentSynchronizedTime);
-                }
-            });
-        } else {
-            currentSynchronizedTime = historyRealm.where(CurrentCallDate.class).findFirst().getDate();
-        }
-
-        ContactsManager contactsManager= new ContactsManager();
-        contactsManager.setContext(getContext());
-        contactsManager.setContactList();
-        historyRealm.beginTransaction();
-        while (managedCursor.moveToNext()) {
-            if (currentSynchronizedTime.after(new Date(Long.valueOf(managedCursor.getString(date))))) {
-                continue;
-            }
-
-            if (contactsManager.isExist(managedCursor.getString(number))) {
-                continue;
-            }
-
-            String phoneNumber = managedCursor.getString(number);
-            String callType = managedCursor.getString(type);
-            String callDate = managedCursor.getString(date);
-            Date callDayTime = new Date(Long.valueOf(callDate));
-            String dir = null;
-
-            int dircode = Integer.parseInt(callType);
-            switch (dircode) {
-                case CallLog.Calls.OUTGOING_TYPE:   // 발신
-                    dir = "OUTGOING";
-                    break;
-                case CallLog.Calls.INCOMING_TYPE:   // 수신
-                    dir = "INCOMING";
-                    break;
-                case CallLog.Calls.MISSED_TYPE:     // 부재중
-                    dir = "MISSED";
-                    break;
-            }
-
-            CallHistory newHistory = historyRealm.createObject(CallHistory.class);
-            newHistory.setPhoneNumber(phoneNumber);
-            newHistory.setCallType(dir);
-            newHistory.setDate(callDayTime);
-            newHistory.setDuration(duration);
-        }
+        if (isInitialized)
+            return;
 
         RealmResults<CallHistory> result = historyRealm.where(CallHistory.class).findAll();
         ArrayList<CallHistory> list = new ArrayList<>();
         list.addAll(historyRealm.copyFromRealm(result));
 
-        historyRealm.where(CurrentCallDate.class).findFirst().setDate(Calendar.getInstance().getTime());
+        historyList.clear();
+        historyList.addAll(list);
 
-        historyRealm.commitTransaction();
-        historyRealm.close();
-        managedCursor.close();
-
-        return list;
+        isInitialized = true;
+//        SharedPreferences.Editor editor = getActivity().getSharedPreferences("data", 0).edit();
+//        editor.putBoolean("isInitialized", true);
+//        editor.apply();
     }
 
     public void removeCallHistory(Date callTime) {
+        try {
+            historyRealm.beginTransaction();
+            historyRealm.where(CallHistory.class).equalTo("date", callTime)
+                    .findFirst()
+                    .deleteFromRealm();
+            historyRealm.commitTransaction();
+        } catch (Exception e) {
+            if (historyRealm.isInTransaction()) {
+                historyRealm.cancelTransaction();
+            }
+            throw new RuntimeException(e);
+        }
+    }
 
-        RealmConfiguration callHistoryConfig = new RealmConfiguration.Builder()
-                .name("history.realm")
-                .modules(new CallHistoryModule())
-                .build();
-
-        Realm historyRealm = Realm.getInstance(callHistoryConfig);
-        historyRealm.beginTransaction();
-
-        historyRealm.where(CallHistory.class).equalTo("date", callTime)
-                .findFirst()
-                .deleteFromRealm();
-
-        historyRealm.commitTransaction();
-        historyRealm.close();
+    public void addCallHistory(CallHistory callHistory) {
+        try {
+            historyRealm.beginTransaction();
+            CallHistory newHistory = historyRealm.createObject(CallHistory.class);
+            newHistory.setPhoneNumber(callHistory.getPhoneNumber());
+            newHistory.setCallType(callHistory.getCallType());
+            newHistory.setDate(callHistory.getDate());
+            newHistory.setDuration(callHistory.getDuration());
+            historyRealm.commitTransaction();
+            historyList.add(callHistory);
+        } catch (Exception e) {
+            if (historyRealm.isInTransaction()) {
+                historyRealm.cancelTransaction();
+            }
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -91,6 +91,7 @@
             android:textSize="@dimen/item_recent_call_time_size"/>
 
         <ImageView
+            android:visibility="invisible"
             android:id="@+id/detail_button"
             android:layout_width="@dimen/item_recent_call_detail_information_item_size"
             android:layout_height="@dimen/item_recent_call_detail_information_item_size"

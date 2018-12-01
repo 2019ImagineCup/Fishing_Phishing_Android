@@ -28,4 +28,8 @@
     <dimen name="item_call_log_detail_size">14sp</dimen>
     <dimen name="item_call_log_date_size">14sp</dimen>
     <dimen name="item_call_log_time_information_size">13sp</dimen>
+
+    <dimen name="call_fragment_number_size">30sp</dimen>
+    <dimen name="call_fragment_button_size">85dp</dimen>
+    <dimen name="call_fragment_margin_bottom">35dp</dimen>
 </resources>

@@ -2,6 +2,7 @@ package ensharp.imagincup2019.fishingphishing.UI;
 
 import android.Manifest;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -9,18 +10,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.microsoft.cognitiveservices.speech.SpeechConfig;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import ensharp.imagincup2019.fishingphishing.Common.Constants;
+import java.util.HashMap;
+
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.CallFragment;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.LogFragment;
-import ensharp.imagincup2019.fishingphishing.UI.Fragments.NumbersFragment;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.RecentsFragment;
 import ensharp.imagincup2019.fishingphishing.R;
+import ensharp.imagincup2019.fishingphishing.UI.Fragments.TestFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DatabaseReference database;
 
     private ImageButton[] bottomButtons;
     private Fragment[] fragments;
@@ -35,14 +43,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        database = FirebaseDatabase.getInstance().getReference();
+        database.child("call").child("call_list").addChildEventListener(databaseEventListener);
+
+        RecentsFragment recentsFragment = new RecentsFragment();
+        CallFragment callFragment = new CallFragment(recentsFragment);
+        LogFragment logFragment = new LogFragment();
+
         fragments = new Fragment[] {
-                new RecentsFragment(), new CallFragment(), new NumbersFragment(), new LogFragment()
+                recentsFragment, callFragment, logFragment
         };
 
         bottomButtons = new ImageButton[] {
                 findViewById(R.id.recentsButton),
                 findViewById(R.id.callButton),
-                findViewById(R.id.numbersButton),
                 findViewById(R.id.logButton)
         };
 
@@ -87,28 +101,52 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 bottomButtons[0].setImageResource(R.drawable.icon_recents_clicked);
                 bottomButtons[1].setImageResource(R.drawable.icon_call_normal);
-                bottomButtons[2].setImageResource(R.drawable.icon_numbers_normal);
-                bottomButtons[3].setImageResource(R.drawable.icon_analytics_normal);
+                bottomButtons[2].setImageResource(R.drawable.icon_analytics_normal);
                 break;
             case 1:
                 bottomButtons[0].setImageResource(R.drawable.icon_recents_normal);
                 bottomButtons[1].setImageResource(R.drawable.icon_call_clicked);
-                bottomButtons[2].setImageResource(R.drawable.icon_numbers_normal);
-                bottomButtons[3].setImageResource(R.drawable.icon_analytics_normal);
+                bottomButtons[2].setImageResource(R.drawable.icon_analytics_normal);
                 break;
             case 2:
                 bottomButtons[0].setImageResource(R.drawable.icon_recents_normal);
                 bottomButtons[1].setImageResource(R.drawable.icon_call_normal);
-                bottomButtons[2].setImageResource(R.drawable.icon_numbers_clicked);
-                bottomButtons[3].setImageResource(R.drawable.icon_analytics_normal);
-                break;
-            case 3:
-                bottomButtons[0].setImageResource(R.drawable.icon_recents_normal);
-                bottomButtons[1].setImageResource(R.drawable.icon_call_normal);
-                bottomButtons[2].setImageResource(R.drawable.icon_numbers_normal);
-                bottomButtons[3].setImageResource(R.drawable.icon_analytics_clicked);
+                bottomButtons[2].setImageResource(R.drawable.icon_analytics_clicked);
                 break;
 
         }
     }
+
+    private ChildEventListener databaseEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.e("Data",dataSnapshot.getValue().toString());
+            HashMap<String, Object> hash = (HashMap) dataSnapshot.getValue();
+            Log.e("my_phone_num",hash.get("my_phone_num").toString());
+            Log.e("opponent_phone_num",hash.get("opponent_phone_num").toString());
+            Log.e("text",hash.get("text").toString());
+            Log.e("flag",hash.get("flag").toString());
+            Log.e("accuracy",hash.get("accuracy").toString());
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.e("change",dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            Log.e("remove",dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.e("move",dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 }

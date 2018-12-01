@@ -18,10 +18,10 @@ buildscript {
 
 allprojects {
     repositories {
-google()
-jcenter()
-maven { url 'https://csspeechstorage.blob.core.windows.net/maven/' }
-}
+    google()
+    jcenter()
+    maven { url 'https://csspeechstorage.blob.core.windows.net/maven/' }
+    }
 }
 
 task clean(type: Delete) {

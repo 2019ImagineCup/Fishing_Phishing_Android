@@ -3,15 +3,222 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:background="@android:color/white">
 
-    <ImageButton
-        android:id="@+id/button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:src="@drawable/icon_call_normal"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"/>
+    <TextView
+        android:id="@+id/phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:gravity="center_horizontal"
+        android:textSize="30sp"
+        android:textColor="@android:color/black"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        
+        <ImageButton
+            android:id="@+id/one"
+            android:tag="1"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_1"/>
+
+        <ImageButton
+            android:id="@+id/two"
+            android:tag="2"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_2"/>
+
+        <ImageButton
+            android:id="@+id/three"
+            android:tag="3"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_3"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/four"
+            android:tag="4"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_4"/>
+
+        <ImageButton
+            android:id="@+id/five"
+            android:tag="5"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_5"/>
+
+        <ImageButton
+            android:id="@+id/six"
+            android:tag="6"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_6"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/seven"
+            android:tag="7"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_7"/>
+
+        <ImageButton
+            android:id="@+id/eight"
+            android:tag="8"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_8"/>
+
+        <ImageButton
+            android:id="@+id/nine"
+            android:tag="9"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_9"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/star"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_star"/>
+
+        <ImageButton
+            android:id="@+id/zero"
+            android:tag="0"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_0"/>
+
+        <ImageButton
+            android:id="@+id/sharp"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_sharp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/scam"
+            android:tag="scam"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_scam"/>
+
+        <ImageButton
+            android:id="@+id/call"
+            android:tag="call"
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/item_get"/>
+
+        <FrameLayout
+            android:layout_width="@dimen/call_fragment_button_size"
+            android:layout_height="@dimen/call_fragment_button_size">
+
+            <ImageButton
+                android:id="@+id/delete"
+                android:visibility="visible"
+                android:layout_width="40dp"
+                android:layout_height="@dimen/call_fragment_button_size"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:src="@drawable/item_delete"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+    
 </LinearLayout>

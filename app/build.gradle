@@ -46,16 +46,17 @@ dependencies {
     // For Expanded Tab
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
-    // For Firebase
-    implementation 'com.firebase:firebase-client-android:2.4.1+'
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-firestore:11.4.2'
     // For Realm
     implementation 'io.realm:android-adapters:2.0.0'
     // For Sticky Headers
     implementation 'se.emilsjolander:stickylistheaders:2.7.0'
     // For Speech SDK
     implementation 'com.microsoft.cognitiveservices.speech:client-sdk:1.1.0'
+    // For Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
