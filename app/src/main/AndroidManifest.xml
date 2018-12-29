@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".MyApplication"
@@ -18,6 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon" >
+
+        <meta-data android:name="AA_DB_NAME" android:value="Pickrand" />
+        <meta-data android:name="AA_DB_VERSION" android:value="5" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="ensharp.imagincup2019.fishingphishing.Database.Model.CallHistory, ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem" />
+
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="ensharp.imagincup2019.fishingphishing"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
+
         <activity android:name=".UI.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +41,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.CallActivity"
-            android:noHistory="true"/>
-        <activity android:name=".UI.CallWaitingActivity"
-            android:noHistory="true"/>
+            android:noHistory="true" />
+        <activity android:name=".UI.CallWaitingActivity" />
         <service android:name=".Call.MyBoundService"/>
     </application>
 

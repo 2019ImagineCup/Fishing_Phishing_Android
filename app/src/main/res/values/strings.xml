@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">FishingPhishing</string>
 
-    <string name="recents_fragment_name">최근 보이스 피싱 의심 통화</string>
-    <string name="recents_fragment_all">모두</string>
-    <string name="recents_fragment_by_numbers">번호별로</string>
+    <string name="recents_fragment_name">Recent Suspicious Calls</string>
+    <string name="recents_fragment_all">All</string>
+    <string name="recents_fragment_by_numbers">By numbers</string>
 
-    <string name="numbers_fragment_name">보이스 피싱 의심번호 관리</string>
+    <string name="numbers_fragment_name">Numbers</string>
 
-    <string name="log_fragment_name">분석 기록 관리</string>
+    <string name="log_fragment_name">Call Analysis</string>
 
     <string name="speech_subscription_key">5d59cc81db784d00b1a5c830815404d4</string>
     <string name="speech_region">westus</string>

@@ -42,7 +42,8 @@
             android:paddingBottom="@dimen/recents_fragment_title_bottom_padding"
             android:textStyle="bold"
             android:textSize="@dimen/recents_fragment_title_text_size"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:text="@string/recents_fragment_name"/>
 
     </LinearLayout>
 

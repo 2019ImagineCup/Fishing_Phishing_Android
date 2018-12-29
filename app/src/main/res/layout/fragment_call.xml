@@ -23,35 +23,29 @@
         
         <ImageButton
             android:id="@+id/one"
-            android:tag="1"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_1"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/two"
-            android:tag="2"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_2"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/three"
-            android:tag="3"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_3"/>
+            android:background="@android:color/transparent" />
         
     </LinearLayout>
 
@@ -65,35 +59,29 @@
 
         <ImageButton
             android:id="@+id/four"
-            android:tag="4"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_4"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/five"
-            android:tag="5"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_5"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/six"
-            android:tag="6"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_6"/>
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 
@@ -106,35 +94,29 @@
 
         <ImageButton
             android:id="@+id/seven"
-            android:tag="7"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_7"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/eight"
-            android:tag="8"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_8"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/nine"
-            android:tag="9"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_9"/>
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 
@@ -151,20 +133,17 @@
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_star"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/zero"
-            android:tag="0"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_0"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/sharp"
@@ -172,8 +151,7 @@
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_sharp"/>
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 
@@ -185,23 +163,19 @@
 
         <ImageButton
             android:id="@+id/scam"
-            android:tag="scam"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_scam"/>
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/call"
-            android:tag="call"
             android:layout_width="@dimen/call_fragment_button_size"
             android:layout_height="@dimen/call_fragment_button_size"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/item_get"/>
+            android:background="@android:color/transparent" />
 
         <FrameLayout
             android:layout_width="@dimen/call_fragment_button_size"
@@ -214,8 +188,7 @@
                 android:layout_height="@dimen/call_fragment_button_size"
                 android:scaleType="fitCenter"
                 android:layout_gravity="center_horizontal"
-                android:background="@android:color/transparent"
-                android:src="@drawable/item_delete"/>
+                android:background="@android:color/transparent" />
 
         </FrameLayout>
 

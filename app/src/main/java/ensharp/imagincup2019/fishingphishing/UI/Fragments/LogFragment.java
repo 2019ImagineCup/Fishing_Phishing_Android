@@ -31,7 +31,7 @@ public class LogFragment extends Fragment {
 
     private Constants constants = Constants.getInstance();
     private View view;
-    private String[] titles = {"모두", "번호별로"};
+    private String[] titles = {"All", "By numbers"};
     private SegmentTabLayout tabLayout;
     private RecyclerView list;
     private ExpandableStickyListHeadersListView stickyList;

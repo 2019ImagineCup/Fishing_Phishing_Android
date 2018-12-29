@@ -1,6 +1,7 @@
 package ensharp.imagincup2019.fishingphishing.UI;
 
 import android.Manifest;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
+import ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.CallFragment;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.LogFragment;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.RecentsFragment;
@@ -27,6 +29,8 @@ import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.TestFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
 
     private DatabaseReference database;
 
@@ -43,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        database = FirebaseDatabase.getInstance().getReference();
-        database.child("call").child("call_list").addChildEventListener(databaseEventListener);
+//        database = FirebaseDatabase.getInstance().getReference();
+//        database.child("call").child("call_list").addChildEventListener(databaseEventListener);
 
         RecentsFragment recentsFragment = new RecentsFragment();
         CallFragment callFragment = new CallFragment(recentsFragment);
