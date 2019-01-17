@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ensharp.imagincup2019.fishingphishing">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_anchor_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_anchor_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon" >
+
+        <meta-data android:name="AA_DB_NAME" android:value="Pickrand" />
+        <meta-data android:name="AA_DB_VERSION" android:value="5" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="ensharp.imagincup2019.fishingphishing.Database.Model.CallHistory, ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem" />
+
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="ensharp.imagincup2019.fishingphishing"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
+
+        <activity android:name=".UI.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UI.CallActivity"
+            android:noHistory="true" />
+        <activity android:name=".UI.CallWaitingActivity" />
+        <service android:name=".Call.MyBoundService"/>
+    </application>
+
+</manifest>

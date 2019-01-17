@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "533694181362",
+    "firebase_url": "https://fishingphishing-2ac98.firebaseio.com",
+    "project_id": "fishingphishing-2ac98",
+    "storage_bucket": "fishingphishing-2ac98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533694181362:android:c514f7be75060bb0",
+        "android_client_info": {
+          "package_name": "e.seyoung.firebase_connection_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533694181362-uej9hv5qjpb59kmcpmlh8p65ou3abqfv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "e.seyoung.firebase_connection_project",
+            "certificate_hash": "4d902a354ef3071b642fac47c9f6167b544651a0"
+          }
+        },
+        {
+          "client_id": "533694181362-u7k8e181b6klhrra3kn2pf8dsnbr29en.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEWHoqGkDxSLK4V_PqahdkwTf8NlwrqeU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533694181362-u7k8e181b6klhrra3kn2pf8dsnbr29en.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533694181362:android:5a57704023448657",
+        "android_client_info": {
+          "package_name": "ensharp.imagincup2019.fishingphishing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533694181362-48av0vsd0sihkclekih7rs1bpocg6a01.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ensharp.imagincup2019.fishingphishing",
+            "certificate_hash": "bf89eff8c99feb4a1530ed9b0ae96419a9f10b45"
+          }
+        },
+        {
+          "client_id": "533694181362-u7k8e181b6klhrra3kn2pf8dsnbr29en.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEWHoqGkDxSLK4V_PqahdkwTf8NlwrqeU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533694181362-u7k8e181b6klhrra3kn2pf8dsnbr29en.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

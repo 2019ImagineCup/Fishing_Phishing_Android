@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">FishingPhishing</string>
+
+    <string name="recents_fragment_name">Recent Suspicious Calls</string>
+    <string name="recents_fragment_all">All</string>
+    <string name="recents_fragment_by_numbers">By numbers</string>
+
+    <string name="numbers_fragment_name">Numbers</string>
+
+    <string name="log_fragment_name">Call Analysis</string>
+
+    <string name="speech_subscription_key">5d59cc81db784d00b1a5c830815404d4</string>
+    <string name="speech_region">westus</string>
+</resources>
