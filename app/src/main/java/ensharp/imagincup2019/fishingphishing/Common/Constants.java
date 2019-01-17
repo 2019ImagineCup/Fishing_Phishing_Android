@@ -51,4 +51,7 @@ public class Constants {
     public String getAndroid_id(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
+
+    public static final int REQUEST_POST = 0 ;
+    public static final int REQUEST_GET = 1;
 }
