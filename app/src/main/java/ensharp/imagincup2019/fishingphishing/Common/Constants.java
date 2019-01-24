@@ -19,24 +19,24 @@ public class Constants {
     private ArrayList<CallLogVO> logs;
 
     private Constants() {
-//        logs = new ArrayList<>(
-//                Arrays.asList(new CallLogVO[] {
-//                        new CallLogVO("1234", "Cell Phone", "2018.11.5", "PM 9:29", "incoming", "23sec", "", new AnalysisVO()),
-//                        new CallLogVO("4321", "Cell Phone", "2018.11.5", "PM 9:11", "outgoing", "18min 3sec", "", new AnalysisVO()),
-//                        new CallLogVO("5678", "Cell Phone", "2018.11.5", "PM 7:21", "missed", "", "", new AnalysisVO()),
-//                        new CallLogVO("1234", "Cell Phone", "2018.11.5", "PM 7:21", "incoming", "19sec", "", new AnalysisVO()),
-//                        new CallLogVO("1234", "Cell Phone", "2018.11.5", "PM 6:58", "missed", "", "", new AnalysisVO()),
-//                        new CallLogVO("1234", "Cell Phone", "2018.11.4", "AM 11:09", "incoming", "10min 1sec", "", new AnalysisVO()),
-//                        new CallLogVO("4321", "Cell Phone", "2018.11.5", "PM 6:00", "incoming", "10min 1sec", "", new AnalysisVO()),
-//                        new CallLogVO("1234", "Cell Phone", "2018.11.4", "AM 4:19", "missed", "", "", new AnalysisVO()),
-//                        new CallLogVO("1234", "Cell Phone", "2018.11.3", "PM 2:13", "outgoing", "21min 30sec", "", new AnalysisVO()),
-//                        new CallLogVO("4321", "Cell Phone", "2018.11.3", "AM 9:11", "outgoing", "8min 24sec", "", new AnalysisVO()),
-//                        new CallLogVO("5678", "Cell Phone", "2018.11.2", "PM 5:24", "outgoing", "6min", "", new AnalysisVO()),
-//                        new CallLogVO("5678", "Cell Phone", "2018.11.2", "PM 3:21", "incoming", "11min 1sec", "", new AnalysisVO()),
-//                        new CallLogVO("4321", "Cell Phone", "2018.11.2", "AM 11:39", "outgoing", "9sec", "", new AnalysisVO()),
-//                        new CallLogVO("1234", "Cell Phone", "2018.11.2", "AM 11:34", "incoming", "6sec", "", new AnalysisVO())
-//                })
-//        );
+        logs = new ArrayList<>(
+                Arrays.asList(new CallLogVO[] {
+                        new CallLogVO("1234", "Cell Phone", "2018.11.5", "PM 9:29", "incoming", "23sec", "", new AnalysisVO()),
+                        new CallLogVO("4321", "Cell Phone", "2018.11.5", "PM 9:11", "outgoing", "18min 3sec", "", new AnalysisVO()),
+                        new CallLogVO("5678", "Cell Phone", "2018.11.5", "PM 7:21", "missed", "", "", new AnalysisVO()),
+                        new CallLogVO("1234", "Cell Phone", "2018.11.5", "PM 7:21", "incoming", "19sec", "", new AnalysisVO()),
+                        new CallLogVO("1234", "Cell Phone", "2018.11.5", "PM 6:58", "missed", "", "", new AnalysisVO()),
+                        new CallLogVO("1234", "Cell Phone", "2018.11.4", "AM 11:09", "incoming", "10min 1sec", "", new AnalysisVO()),
+                        new CallLogVO("4321", "Cell Phone", "2018.11.5", "PM 6:00", "incoming", "10min 1sec", "", new AnalysisVO()),
+                        new CallLogVO("1234", "Cell Phone", "2018.11.4", "AM 4:19", "missed", "", "", new AnalysisVO()),
+                        new CallLogVO("1234", "Cell Phone", "2018.11.3", "PM 2:13", "outgoing", "21min 30sec", "", new AnalysisVO()),
+                        new CallLogVO("4321", "Cell Phone", "2018.11.3", "AM 9:11", "outgoing", "8min 24sec", "", new AnalysisVO()),
+                        new CallLogVO("5678", "Cell Phone", "2018.11.2", "PM 5:24", "outgoing", "6min", "", new AnalysisVO()),
+                        new CallLogVO("5678", "Cell Phone", "2018.11.2", "PM 3:21", "incoming", "11min 1sec", "", new AnalysisVO()),
+                        new CallLogVO("4321", "Cell Phone", "2018.11.2", "AM 11:39", "outgoing", "9sec", "", new AnalysisVO()),
+                        new CallLogVO("1234", "Cell Phone", "2018.11.2", "AM 11:34", "incoming", "6sec", "", new AnalysisVO())
+                })
+        );
     }
 
     public void setLogs(ArrayList<CallLogVO> _logs) {
@@ -63,5 +63,5 @@ public class Constants {
     public static final int SEND_TEXT_CALL_MIDDLE = 1001;
     public static final int SEND_TEXT_CALL_END = 1002;
     public static final int GET_LOG_LIST = 1003;
-    public static String id;
+    public static String id = "0";
 }

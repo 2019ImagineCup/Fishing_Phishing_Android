@@ -99,7 +99,6 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String real_result = jsonObject.getString("result");
-                    Log.e("result",real_result);
                     if(!real_result.equals("fail")) {
                         if(!real_result.equals("success")) {
                             Constants.id = real_result;
@@ -132,10 +131,10 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                             String type = tempObject.getString("type");
                             String date = tempObject.getString("date");
                             String period = tempObject.getString("period");
-                            CallLogVO callLogVO = new CallLogVO(opponent_phone_num,type,date,date,period);
+                            CallLogVO callLogVO = new CallLogVO(opponent_phone_num,type,date,date,period,type);
                             logList.add(callLogVO);
-                            Log.e("data",String.valueOf(i)+". "+ my_phone_num +","+ opponent_phone_num +"," + accuracy +","+ text);
                         }
+
                         constants.setLogs(logList);
                         setLogList(tabLayout.getCurrentTab());
 

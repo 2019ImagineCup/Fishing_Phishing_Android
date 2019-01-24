@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -58,6 +59,9 @@ public class CallActivity extends AppCompatActivity {
     private DatabaseReference database;
     private DatabaseReference myRef;
     private DatabaseReference accuracyRef;
+
+    private DatabaseReference mDatabase;
+    private DatabaseReference id_Database;
 
     private static final String SpeechSubscriptionKey = "5d59cc81db784d00b1a5c830815404d4";
     private static final String SpeechRegion = "westus";
@@ -90,6 +94,8 @@ public class CallActivity extends AppCompatActivity {
 
     private Boolean isNotified = false;
 
+    private String id;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +103,25 @@ public class CallActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initImages();
-        initFirebase();
+        //initFirebase();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        id_Database = mDatabase.child("id");
+
+        id_Database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> value = (ArrayList<String>) dataSnapshot.getValue();
+                for(int i=0;i<value.size();i++){
+                    Log.e("Changed", String.valueOf(value.get(i)));
+                    Log.e("Tag",String.valueOf(i));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         Intent intent = getIntent();
         createConfig();
@@ -123,9 +147,12 @@ public class CallActivity extends AppCompatActivity {
     private void initFirebase() {
         database = FirebaseDatabase.getInstance().getReference();
 //        accuracyRef = database.child("call").child("call_list");
+//        accuracyRef = database.child("id");
+//        myRef = database.child("call");
+//        myRef.child("call_list_num").addListenerForSingleValueEvent(onCallListNumberChangedListener);
         accuracyRef = database.child("id");
-        myRef = database.child("call");
-        myRef.child("call_list_num").addListenerForSingleValueEvent(onCallListNumberChangedListener);
+//        accuracyRef.addListenerForSingleValueEvent();
+//        accuracyRef.child(Constants.id).addListenerForSingleValueEvent();
     }
 
     private void initStopWatch() {
@@ -462,18 +489,36 @@ public class CallActivity extends AppCompatActivity {
         return false;
     }
 
-    private ValueEventListener onCallListNumberChangedListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            current_list_num = dataSnapshot.getValue(Integer.class);
-            current_list_num++;
+//    private ValueEventListener onCallListNumberChangedListener = new ValueEventListener() {
+//        @Override
+//        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//            current_list_num = dataSnapshot.getValue(Integer.class);
+//            current_list_num++;
+//
+//            if (current_list_num != -1 && isSecured){
+//                accuracyRef.child("call"+current_list_num).child("accuracy").addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        accuracy = dataSnapshot.getValue(String.class);
+//                        setAccuracyText(accuracy);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        }
 
-            if (current_list_num != -1 && isSecured){
-                accuracyRef.child("call"+current_list_num).child("accuracy").addListenerForSingleValueEvent(new ValueEventListener() {
+        private ValueEventListener onAccuracyChangedListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                accuracyRef.child(Constants.id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        accuracy = dataSnapshot.getValue(String.class);
                         setAccuracyText(accuracy);
+                        Log.e("id 값", Constants.id);
                     }
 
                     @Override
@@ -482,7 +527,7 @@ public class CallActivity extends AppCompatActivity {
                     }
                 });
             }
-        }
+
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
