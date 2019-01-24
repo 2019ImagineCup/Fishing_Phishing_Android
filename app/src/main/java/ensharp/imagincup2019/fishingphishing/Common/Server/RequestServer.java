@@ -1,6 +1,5 @@
 package ensharp.imagincup2019.fishingphishing.Common.Server;
 
-
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -12,21 +11,29 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class RequestHttpURLConnection {
+public class RequestServer {
 
-    public String request(String _url, JSONObject data) {
+    private String url;
+    private JSONObject data;
+
+    public RequestServer(String _url, JSONObject _data){
+        this.url = _url;
+        this.data = _data;
+    }
+
+    //POST 방식 요청
+    public String request_POST() {
         String result = null;
         BufferedReader reader = null;
 
         try {
-            URL urlObject = new URL(_url);
+            URL urlObject = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection();
 
-            Log.e("url",_url.toString());
-            Log.e("connection",conn.toString());
 
-            conn.setReadTimeout(150000); //15초동안 서버로부터 반응없으면 에러
+            conn.setReadTimeout(150000); //10초동안 서버로부터 반응없으면 에러
             conn.setConnectTimeout(15000); // 접속하는 커넥션 타임 15초동안 접속안되면 접속 안되는 것으로 간주
+
 
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Cache-Control", "no-cache");
@@ -55,19 +62,44 @@ public class RequestHttpURLConnection {
 
             result = buffer.toString();
 
-            if(result == null){
-                Log.e("result2","null");
-            } else{
-                Log.e("result3",result.toString());
+            if(conn != null)
+                conn.disconnect();
+
+            return result;
+        } catch (Exception e) {
+            Log.e("Error",e.toString());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    //GET 방식 요청
+    public String request_GET(){
+
+        String result = null;
+        BufferedReader br = null;
+
+        try{
+            URL urlObject = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection();
+
+            conn.setRequestMethod("GET");
+
+            br = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+
+            String line;
+
+            while((line = br.readLine()) != null) {
+                result = result + line + "\n";
             }
 
             if(conn != null)
                 conn.disconnect();
 
             return result;
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
-            Log.e("Error",e.toString());
         }
 
         return null;

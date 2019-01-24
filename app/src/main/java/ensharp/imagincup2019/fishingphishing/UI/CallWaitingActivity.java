@@ -14,6 +14,7 @@ import java.util.Random;
 
 import ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem;
 import ensharp.imagincup2019.fishingphishing.R;
+import ensharp.imagincup2019.fishingphishing.UI.UIElements.GlideApp;
 
 public class CallWaitingActivity extends AppCompatActivity {
 
@@ -31,17 +32,20 @@ public class CallWaitingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_callwaiting);
 
         phoneNumber = findViewById(R.id.phone_number);
-        generateNumber();
+//        generateNumber();
 
         ImageButton declineButton = findViewById(R.id.decline_call);
+        GlideApp.with(this).load(R.drawable.item_refuse).into(declineButton);
         declineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("1","1");
                 generateNumber();
             }
         });
 
         ImageButton acceptButton = findViewById(R.id.get_call);
+        GlideApp.with(this).load(R.drawable.item_get).into(acceptButton);
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,12 +88,15 @@ public class CallWaitingActivity extends AppCompatActivity {
 
         Random random = new Random();
         number = "010-" + random.nextInt(10000) + "-" + random.nextInt(10000);
-
+        Log.e("2","2");
         if (number.length() != 13) {
+            Log.e("4","4");
             generateNumber();
         } else if (!phoneNumber.getText().equals(number)) {
+            Log.e("3","3");
             phoneNumber.setText(number);
         } else {
+            Log.e("5","5");
             generateNumber();
         }
     }

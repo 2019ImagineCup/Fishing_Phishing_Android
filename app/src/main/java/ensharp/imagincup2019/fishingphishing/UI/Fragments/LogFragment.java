@@ -13,10 +13,14 @@ import android.view.ViewGroup;
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ensharp.imagincup2019.fishingphishing.Common.Constants;
+import ensharp.imagincup2019.fishingphishing.Common.Server.NetworkTask;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.AnalysisAdapter;
@@ -60,16 +64,17 @@ public class LogFragment extends Fragment {
         stickyList = view.findViewById(R.id.list_with_sticky_headers);
         stickyList.setAnimExecutor(new AnimationExecutor());
 
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        setLogList(tabLayout.getCurrentTab());
+        connectToserver();
     }
 
+    //
     private void setLogList(int position) {
         switch (position) {
             case 0:
@@ -87,6 +92,7 @@ public class LogFragment extends Fragment {
         }
     }
 
+    //
     public void setListViewAdapter(List<CallLogVO> logList) {
         listViewAdapter = new AnalysisAdapter(logList, this);
         list.setAdapter(listViewAdapter);
@@ -94,6 +100,7 @@ public class LogFragment extends Fragment {
         stickyList.setVisibility(View.GONE);
     }
 
+    //
     public void setStickyListAdapter(List<CallLogVO> logList) {
         stickyAdapter = new StickyAdapter(getContext(), this, logList);
         stickyList.setAdapter(stickyAdapter);
@@ -101,6 +108,7 @@ public class LogFragment extends Fragment {
         list.setVisibility(View.GONE);
     }
 
+    //
     private ArrayList<CallLogVO> organizeLogList(int round, ArrayList<CallLogVO> logList) {
         if (round == logList.size()) return logList;
 
@@ -144,5 +152,27 @@ public class LogFragment extends Fragment {
         }
     };
 
+    //서버 접속
+    public void connectToserver(){
+        String url = "http://52.175.215.193/road";
+
+        JSONObject json_data = send_Data("01012341234");
+
+        NetworkTask networkTask = new NetworkTask(getActivity(), url , json_data, Constants.REQUEST_POST, Constants.GET_LOG_LIST, listViewAdapter,
+                stickyAdapter, list, stickyList,tabLayout,this);
+
+            networkTask.execute();
+    }
+
+    //서버에 요청할 데이터
+    private JSONObject send_Data(String myNum){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.accumulate("my_phone_num", myNum);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 
 }

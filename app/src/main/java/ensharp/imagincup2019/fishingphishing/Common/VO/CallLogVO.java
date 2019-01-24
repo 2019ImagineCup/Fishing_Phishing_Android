@@ -12,6 +12,15 @@ public class CallLogVO {
     private AnalysisVO analysis;
     private int tag;
 
+    public CallLogVO(String phoneNumber, String detail, String date, String time,String period) {
+        this.phoneNumber = phoneNumber;
+        this.detail = detail; // phoneType(수신/발신/부재중 등)
+        this.date = date;
+        this.time = time;
+        this.category = category;   // callType(수신/발신/부재중 등)
+        this.period = period;       // duration
+    }
+
     public CallLogVO(String phoneNumber, String detail, String date, String time, String category, String period, String record, AnalysisVO analysis) {
         this.phoneNumber = phoneNumber;
         this.detail = detail; // phoneType(수신/발신/부재중 등)

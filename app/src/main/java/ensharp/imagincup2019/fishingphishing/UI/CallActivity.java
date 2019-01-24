@@ -7,9 +7,11 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
+import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,15 +19,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +40,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -49,12 +47,10 @@ import java.util.concurrent.Future;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
-import ensharp.imagincup2019.fishingphishing.Call.MicrophoneStream;
 import ensharp.imagincup2019.fishingphishing.Call.MyBoundService;
+import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Common.Server.NetworkTask;
-import ensharp.imagincup2019.fishingphishing.Database.DatabaseManager;
 import ensharp.imagincup2019.fishingphishing.R;
-import ensharp.imagincup2019.fishingphishing.UI.Fragments.RecentsFragment;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.GlideApp;
 
 public class CallActivity extends AppCompatActivity {
@@ -126,7 +122,8 @@ public class CallActivity extends AppCompatActivity {
 
     private void initFirebase() {
         database = FirebaseDatabase.getInstance().getReference();
-        accuracyRef = database.child("call").child("call_list");
+//        accuracyRef = database.child("call").child("call_list");
+        accuracyRef = database.child("id");
         myRef = database.child("call");
         myRef.child("call_list_num").addListenerForSingleValueEvent(onCallListNumberChangedListener);
     }
@@ -150,6 +147,7 @@ public class CallActivity extends AppCompatActivity {
 
         if (!isNotified) {
             notificationLayout.setVisibility(View.VISIBLE);
+            alarm_vibrator();
             isNotified = true;
         }
 
@@ -164,7 +162,8 @@ public class CallActivity extends AppCompatActivity {
         updateThread();
         stopWatch.startNotify();
 
-        sendToServer("", 0);
+       request_server(Constants.SEND_TEXT_CALL_START);
+
         recognizeSpeech();
     }
 
@@ -207,30 +206,81 @@ public class CallActivity extends AppCompatActivity {
         notificationLayout.setVisibility(View.GONE);
     }
 
-    private void sendTextToServer() {
-//        if (content.size() % 3 == 0) {
-//            sendToServer(TextUtils.join(" ", content.subList(0, content.size() - 1)), 1);
-//            isSecured = true;
-//        }
-        sendToServer(TextUtils.join(" ", content.subList(0, content.size() - 1)), 1);
-    }
+    private void request_server(int ACTION){
+        String url;
+        NetworkTask networkTask;
+        JSONObject data;
 
-    private void sendToServer(String textToSend, int flag) {
-        String url = "http://52.183.30.69:80/text";
-
-        JSONObject jsonObject = send_Data("010-1234-1234", number.getText().toString(), textToSend, flag);
-        NetworkTask networkTask = new NetworkTask(getApplicationContext(), url, jsonObject);
-        networkTask.execute();
+        switch(ACTION){
+            case Constants.SEND_TEXT_CALL_START:
+                url = "http://52.175.215.193/insert";
+                data = send_Data_Call_Start("01012341234",number.getText().toString(),"","0");
+                Log.e("Start","Start");
+                networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT);
+                networkTask.execute();
+                break;
+            case Constants.SEND_TEXT_CALL_MIDDLE:
+                url = "http://52.175.215.193/update";
+                if (content.size() % 3 == 0) {
+                    data = send_Data_Call_Middle("01012341234",number.getText().toString(),TextUtils.join(" ", content.subList(0, content.size() - 1)), "1");
+                    networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT);
+                    networkTask.execute();
+                    isSecured = true;
+                }
+                break;
+            case Constants.SEND_TEXT_CALL_END:
+                url = "http://52.175.215.193/update";
+                data = send_Data_Call_End("01012341234",number.getText().toString(),recognizedTextView.getText().toString(),"2");
+                networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT);
+                networkTask.execute();
+                break;
+        }
     }
 
     //서버에 요청할 데이터
-    private JSONObject send_Data(String myNum, String yourNum, String text_data, int flag_data){
+    private JSONObject send_Data_Call_Start(String myNum, String yourNum, String text_data, String flag_data){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate("my_phone_num", myNum);
             jsonObject.accumulate("opponent_phone_num", yourNum);
             jsonObject.accumulate("text", text_data);
             jsonObject.accumulate("flag", flag_data);
+            jsonObject.accumulate("date",currentTime);
+            jsonObject.accumulate("type","incoming");
+            jsonObject.accumulate("period","");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    //서버에 요청할 데이터
+    private JSONObject send_Data_Call_Middle(String myNum, String yourNum, String text_data,String flag_data){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.accumulate("my_phone_num", myNum);
+            jsonObject.accumulate("opponent_phone_num", yourNum);
+            jsonObject.accumulate("text", text_data);
+            jsonObject.accumulate("flag", flag_data);
+            jsonObject.accumulate("period", "");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    //서버에 요청할 데이터
+    private JSONObject send_Data_Call_End(String myNum, String yourNum, String text_data,String flag_data){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.accumulate("my_phone_num", myNum);
+            jsonObject.accumulate("opponent_phone_num", yourNum);
+            jsonObject.accumulate("text", text_data);
+            jsonObject.accumulate("flag", flag_data);
+            jsonObject.accumulate("period",duration);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -322,6 +372,9 @@ public class CallActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         finishActivity();
+        if (serviceConnection != null) {
+            unbindService(serviceConnection);
+        }
     }
 
     private void finishActivity() {
@@ -335,6 +388,7 @@ public class CallActivity extends AppCompatActivity {
 
         setResult(Activity.RESULT_OK, new Intent().putExtra("number", number.getText().toString()).putExtra("duration", duration)
                                                                 .putExtra("date", currentTime.toString()));
+
 
         finish();
     }
@@ -360,7 +414,7 @@ public class CallActivity extends AppCompatActivity {
                 Log.i(logTag, "Final result received: " + s);
                 content.add(s);
                 setRecognizedText(TextUtils.join(" ", content));
-                sendTextToServer();
+                request_server(Constants.SEND_TEXT_CALL_MIDDLE);
             });
 
             final Future<Void> task = reco.startContinuousRecognitionAsync();
@@ -376,6 +430,7 @@ public class CallActivity extends AppCompatActivity {
         }
     }
 
+    //통화 끊기 버튼눌렀을 때
     @OnTouch(R.id.recognize_button)
     boolean onEndCallButtonTouch(View v, MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN){
@@ -392,7 +447,7 @@ public class CallActivity extends AppCompatActivity {
                     final Future<Void> task = reco.stopContinuousRecognitionAsync();
                     setOnTaskCompletedListener(task, result -> {
                         Log.i(logTag, "Continuous recognition stopped.");
-                        sendToServer(recognizedTextView.getText().toString(), 2);
+                        request_server(Constants.SEND_TEXT_CALL_END);
                         CallActivity.this.runOnUiThread(() -> {
                             finishActivity();
                         });
@@ -434,4 +489,11 @@ public class CallActivity extends AppCompatActivity {
 
         }
     };
+
+    //진동
+    private void alarm_vibrator(){
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        vibrator.vibrate(2000);
+    }
 }
