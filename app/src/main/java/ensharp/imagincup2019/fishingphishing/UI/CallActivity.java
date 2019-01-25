@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -103,25 +105,7 @@ public class CallActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initImages();
-        //initFirebase();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        id_Database = mDatabase.child("id");
-
-        id_Database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<String> value = (ArrayList<String>) dataSnapshot.getValue();
-                for(int i=0;i<value.size();i++){
-                    Log.e("Changed", String.valueOf(value.get(i)));
-                    Log.e("Tag",String.valueOf(i));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        initFirebase();
 
         Intent intent = getIntent();
         createConfig();
@@ -147,12 +131,31 @@ public class CallActivity extends AppCompatActivity {
     private void initFirebase() {
         database = FirebaseDatabase.getInstance().getReference();
 //        accuracyRef = database.child("call").child("call_list");
-//        accuracyRef = database.child("id");
-//        myRef = database.child("call");
-//        myRef.child("call_list_num").addListenerForSingleValueEvent(onCallListNumberChangedListener);
         accuracyRef = database.child("id");
+//        myRef = database.child("call");
+        accuracyRef.child("id"+Constants.id).child("accuracy").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.e("Under_id", String.valueOf(dataSnapshot));
+                HashMap<String,String> hash = (HashMap<String, String>)dataSnapshot.getValue();
+                Log.e("hash",String.valueOf(hash.get("accuracy")));
+                String ac = hash.get("accuracy");
+//                        Long ac = dataSnapshot.getValue(Long.class);
+
+                accuracy = String.valueOf(ac);
+
+                setAccuracyText(accuracy);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//        accuracyRef = database.child("id");
 //        accuracyRef.addListenerForSingleValueEvent();
 //        accuracyRef.child(Constants.id).addListenerForSingleValueEvent();
+//        accuracyRef.addListenerForSingleValueEvent(onAccuracyChangedListener);
     }
 
     private void initStopWatch() {
@@ -168,14 +171,13 @@ public class CallActivity extends AppCompatActivity {
     private void setAccuracyText(String rawValue) {
         double value = Double.parseDouble(rawValue) * 100;
 
-        if (value < 70) return;
+        Log.e("value",String.valueOf(value));
 
-        if (isNotified) return;
-
-        if (!isNotified) {
+        if (value < 70)
+            return;
+        else {
             notificationLayout.setVisibility(View.VISIBLE);
             alarm_vibrator();
-            isNotified = true;
         }
 
         String announcement = value + "% chance of voice phishing!";
@@ -202,8 +204,6 @@ public class CallActivity extends AppCompatActivity {
                         public void run() {
                             status.setText(stopWatch.getString());
                             if (isNotified) {
-                                accuracyText.setText("73% chance of voice phishing!");
-                                notificationLayout.setVisibility(View.VISIBLE);
                             }
                         }
                     });
@@ -243,14 +243,14 @@ public class CallActivity extends AppCompatActivity {
                 url = "http://52.175.215.193/insert";
                 data = send_Data_Call_Start("01012341234",number.getText().toString(),"","0");
                 Log.e("Start","Start");
-                networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT);
+                networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT,accuracyText,notificationLayout);
                 networkTask.execute();
                 break;
             case Constants.SEND_TEXT_CALL_MIDDLE:
                 url = "http://52.175.215.193/update";
                 if (content.size() % 3 == 0) {
                     data = send_Data_Call_Middle("01012341234",number.getText().toString(),TextUtils.join(" ", content.subList(0, content.size() - 1)), "1");
-                    networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT);
+                    networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT,accuracyText,notificationLayout);
                     networkTask.execute();
                     isSecured = true;
                 }
@@ -258,7 +258,7 @@ public class CallActivity extends AppCompatActivity {
             case Constants.SEND_TEXT_CALL_END:
                 url = "http://52.175.215.193/update";
                 data = send_Data_Call_End("01012341234",number.getText().toString(),recognizedTextView.getText().toString(),"2");
-                networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT);
+                networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT,accuracyText,notificationLayout);
                 networkTask.execute();
                 break;
         }
@@ -489,56 +489,9 @@ public class CallActivity extends AppCompatActivity {
         return false;
     }
 
-//    private ValueEventListener onCallListNumberChangedListener = new ValueEventListener() {
-//        @Override
-//        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//            current_list_num = dataSnapshot.getValue(Integer.class);
-//            current_list_num++;
-//
-//            if (current_list_num != -1 && isSecured){
-//                accuracyRef.child("call"+current_list_num).child("accuracy").addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        accuracy = dataSnapshot.getValue(String.class);
-//                        setAccuracyText(accuracy);
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-//            }
-//        }
-
-        private ValueEventListener onAccuracyChangedListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                accuracyRef.child(Constants.id).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        setAccuracyText(accuracy);
-                        Log.e("id 값", Constants.id);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
-
     //진동
     private void alarm_vibrator(){
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
         vibrator.vibrate(2000);
     }
 }

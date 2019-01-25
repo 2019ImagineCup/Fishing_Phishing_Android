@@ -2,22 +2,34 @@ package ensharp.imagincup2019.fishingphishing.Common.Server;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flyco.tablayout.SegmentTabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
 import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
+import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.LogFragment;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.AnalysisAdapter;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.StickyAdapter;
@@ -40,13 +52,22 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
     private SegmentTabLayout tabLayout;
     private LogFragment logFragment;
 
+
+    @BindView(R.id.accuracyText)
+    TextView accuracyText;
+    @BindView(R.id.notification)
+    FrameLayout notificationLayout;
+
     //POST 형식
-    public NetworkTask(Context _context, String url, JSONObject data, int _requestMethod, int _ACTION) {
+    public NetworkTask(Context _context, String url, JSONObject data, int _requestMethod, int _ACTION,TextView _accuracyText,FrameLayout _notificationLayout) {
         this.context = _context;
         this.url = url;
         this.data = data;
         this.requestMethod = _requestMethod;
         this.ACTION = _ACTION;
+
+        this.accuracyText = _accuracyText;
+        this.notificationLayout = _notificationLayout;
     }
 
     //LogFragment
@@ -102,7 +123,20 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                     if(!real_result.equals("fail")) {
                         if(!real_result.equals("success")) {
                             Constants.id = real_result;
-                            Log.e("id",Constants.id);
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                            database.child("id").child("id"+real_result).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Log.e("accuracy",String.valueOf(dataSnapshot.getValue()));
+                                    HashMap<String,Long> hash = (HashMap<String, Long>) dataSnapshot.getValue();
+                                    setAccuracyText(String.valueOf(hash.get("accuracy")));
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                         }
                         Toast.makeText(context,"Success for send Message",Toast.LENGTH_SHORT).show();
                     } else {
@@ -207,6 +241,29 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         round += count;
         return organizeLogList(round, logList);
+    }
+
+    private void setAccuracyText(String rawValue) {
+        double value = Double.parseDouble(rawValue) * 100;
+
+        Log.e("value",String.valueOf(value));
+
+        if (value < 70)
+            return;
+        else {
+            notificationLayout.setVisibility(View.VISIBLE);
+            alarm_vibrator();
+        }
+
+        String announcement = value + "% chance of voice phishing!";
+
+        accuracyText.setText(announcement);
+    }
+
+    //진동
+    private void alarm_vibrator(){
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(2000);
     }
 }
 
