@@ -191,7 +191,7 @@ public class CallActivity extends AppCompatActivity {
         updateThread();
         stopWatch.startNotify();
 
-       request_server(Constants.SEND_TEXT_CALL_START);
+        request_server(Constants.SEND_TEXT_CALL_START);
 
         recognizeSpeech();
     }

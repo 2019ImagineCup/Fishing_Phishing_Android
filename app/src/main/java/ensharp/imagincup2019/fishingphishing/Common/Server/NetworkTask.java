@@ -248,7 +248,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         Log.e("value",String.valueOf(value));
 
-        if (value < 70)
+        if (value < 50)
             return;
         else {
             notificationLayout.setVisibility(View.VISIBLE);
