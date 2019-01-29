@@ -1,5 +1,6 @@
 package ensharp.imagincup2019.fishingphishing.Common.Server;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Vibrator;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flyco.tablayout.SegmentTabLayout;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +34,7 @@ import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.LogFragment;
+import ensharp.imagincup2019.fishingphishing.UI.Graph.LineGraph;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.AnalysisAdapter;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.StickyAdapter;
 import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
@@ -72,7 +76,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
 
     //LogFragment
     public NetworkTask(Context _context, String url, JSONObject data, int _requestMethod, int _ACTION, AnalysisAdapter _listViewAdapter, StickyAdapter _stickyAdapter,RecyclerView _list,
-                       ExpandableStickyListHeadersListView _stickyList, SegmentTabLayout _tabLayout, LogFragment _logFragment) {
+                       ExpandableStickyListHeadersListView _stickyList, LogFragment _logFragment) {
         this.context = _context;
         this.url = url;
         this.data = data;
@@ -84,7 +88,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
         this.list = _list;
         this. stickyList = _stickyList;
         constants = Constants.getInstance();
-        this.tabLayout = _tabLayout;
+//        this .tabLayout = _tabLayout;
         this.logFragment = _logFragment;
 
     }
@@ -152,11 +156,10 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                     JSONObject jsonObject = new JSONObject(result);
                     String resultResponse = jsonObject.getString("result");
                     JSONArray resultObjectArray = new JSONArray(resultResponse);
-                    Log.e("resultResponse",resultResponse);
                     ArrayList<CallLogVO> logList = new ArrayList<>();
                     if(!resultResponse.equals("fail")){
                         JSONObject tempObject;
-                        for (int i=0; i < resultObjectArray.length(); i++){
+                        for (int i=0; i < resultObjectArray.length(); i++) {
                             tempObject = resultObjectArray.getJSONObject(i);
                             String my_phone_num = tempObject.getString("my_phone_num");
                             String opponent_phone_num = tempObject.getString("opponent_phone_num");
@@ -164,13 +167,26 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                             String text = tempObject.getString("text");
                             String type = tempObject.getString("type");
                             String date = tempObject.getString("date");
+                            String[] date_split = date.split(" ");
+                            String date_text = date_split[0] + "." + date_split[1] + "." + date_split[2];
+                            String[] time_split = date_split[3].split(":");
+                            String time;
+                            if (Integer.parseInt(time_split[0]) < 12){
+                                time = "AM " + date_split[3];
+                            }
+                            else {
+                                time = "PM " + date_split[3];
+                            }
                             String period = tempObject.getString("period");
-                            CallLogVO callLogVO = new CallLogVO(opponent_phone_num,type,date,date,period,type);
+                            String[] period_split = period.split(":");
+                            //String period_text = period_split[0]+"min "+ period_split[1]+"sec";
+                            CallLogVO callLogVO = new CallLogVO(opponent_phone_num,type,date_text,time,period,type);
                             logList.add(callLogVO);
                         }
 
                         constants.setLogs(logList);
-                        setLogList(tabLayout.getCurrentTab());
+//                        setLogList(tabLayout.getCurrentTab());
+                        setLogList(1);
 
                     }
                 } catch (JSONException e) {

@@ -53,9 +53,9 @@ public class LogFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_log, container, false);
-        tabLayout = ViewFindUtils.find(view, R.id.toggle_tab);
-        tabLayout.setTabData(titles);
-        tabLayout.setOnTabSelectListener(onTabSelectListener);
+//        tabLayout = ViewFindUtils.find(view, R.id.toggle_tab);
+//        tabLayout.setTabData(titles);
+//        tabLayout.setOnTabSelectListener(onTabSelectListener);
 
         list = view.findViewById(R.id.list_normal_recycler_view);
         list.addItemDecoration(new DividerItemDecoration(getContext()));
@@ -76,7 +76,7 @@ public class LogFragment extends Fragment {
 
     //
     private void setLogList(int position) {
-        switch (position) {
+        switch (1) {
             case 0:
                 logList.clear();
                 logList.addAll(constants.getLogs());
@@ -159,7 +159,7 @@ public class LogFragment extends Fragment {
         JSONObject json_data = send_Data("01012341234");
 
         NetworkTask networkTask = new NetworkTask(getActivity(), url , json_data, Constants.REQUEST_POST, Constants.GET_LOG_LIST, listViewAdapter,
-                stickyAdapter, list, stickyList,tabLayout,this);
+                stickyAdapter, list, stickyList,this);
 
             networkTask.execute();
     }

@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Database.DatabaseManager;
 import ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.GlideApp;
@@ -132,6 +133,7 @@ public class CallFragment extends Fragment {
                         }
 
                         intent = new Intent(getActivity(), CallActivity.class);
+                        Constants.call_type = "outgoing";
                         intent.putExtra("number", phoneNumber.getText().toString());
                         break;
                     default:

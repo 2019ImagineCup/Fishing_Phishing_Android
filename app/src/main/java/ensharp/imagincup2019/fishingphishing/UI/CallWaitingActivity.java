@@ -18,6 +18,7 @@ import com.bumptech.glide.request.FutureTarget;
 
 import java.util.Random;
 
+import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.GlideApp;
@@ -67,6 +68,7 @@ public class CallWaitingActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("number", phoneNumber.getText().toString());
+                Constants.call_type = "incoming";
                 startActivityForResult(intent, REQUEST_CALL_INFORMATION);
             }
         });

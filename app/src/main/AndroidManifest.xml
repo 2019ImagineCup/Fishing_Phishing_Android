@@ -18,10 +18,13 @@
         android:roundIcon="@mipmap/ic_anchor_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon" >
-
-        <meta-data android:name="AA_DB_NAME" android:value="Pickrand" />
-        <meta-data android:name="AA_DB_VERSION" android:value="5" />
+        tools:replace="android:icon">
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Pickrand" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="5" />
         <meta-data
             android:name="AA_MODELS"
             android:value="ensharp.imagincup2019.fishingphishing.Database.Model.CallHistory, ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem" />
@@ -30,8 +33,7 @@
             android:name="com.activeandroid.content.ContentProvider"
             android:authorities="ensharp.imagincup2019.fishingphishing"
             android:enabled="true"
-            android:exported="false">
-        </provider>
+            android:exported="false"></provider>
 
         <activity android:name=".UI.MainActivity">
             <intent-filter>
@@ -40,10 +42,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.CallActivity"
+        <activity
+            android:name=".UI.CallActivity"
             android:noHistory="true" />
         <activity android:name=".UI.CallWaitingActivity" />
-        <service android:name=".Call.MyBoundService"/>
+
+        <service android:name=".Call.MyBoundService" />
+
+        <activity android:name=".ChartGraph">
+
+        </activity>
     </application>
 
 </manifest>

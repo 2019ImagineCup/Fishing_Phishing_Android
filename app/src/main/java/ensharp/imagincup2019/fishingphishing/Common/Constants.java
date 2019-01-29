@@ -64,4 +64,5 @@ public class Constants {
     public static final int SEND_TEXT_CALL_END = 1002;
     public static final int GET_LOG_LIST = 1003;
     public static String id = "0";
+    public static String call_type = "";
 }

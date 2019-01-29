@@ -273,7 +273,7 @@ public class CallActivity extends AppCompatActivity {
             jsonObject.accumulate("text", text_data);
             jsonObject.accumulate("flag", flag_data);
             jsonObject.accumulate("date",currentTime);
-            jsonObject.accumulate("type","incoming");
+            jsonObject.accumulate("type",Constants.call_type);
             jsonObject.accumulate("period","");
 
         } catch (JSONException e) {

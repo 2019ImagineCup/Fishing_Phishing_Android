@@ -24,6 +24,7 @@ import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
+import com.github.mikephil.charting.charts.LineChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.LogFragment;
+import ensharp.imagincup2019.fishingphishing.UI.Graph.LineGraph;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class StickyAdapter extends BaseAdapter implements StickyListHeadersAdapter, SectionIndexer {
@@ -116,6 +118,11 @@ public class StickyAdapter extends BaseAdapter implements StickyListHeadersAdapt
             holder.swipeLayout = (SwipeLayout) convertView.findViewById(R.id.swipe);
             holder.deleteButton = (Button) convertView.findViewById(R.id.delete);
             holder.expandableLayout = (ExpandableLinearLayout) convertView.findViewById(R.id.expandableLayout);
+
+            LineChart line = (LineChart)holder.expandableLayout.findViewById(R.id.chart);
+            LineGraph lineGraph = new LineGraph(line);
+            lineGraph.setLineChart();
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

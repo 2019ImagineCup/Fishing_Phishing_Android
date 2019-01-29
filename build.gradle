@@ -23,6 +23,9 @@ allprojects {
         jcenter()
         maven { url 'https://csspeechstorage.blob.core.windows.net/maven/' }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+
+        //꺽은선
+        maven {url "https://jitpack.io"}
     }
 }
 
