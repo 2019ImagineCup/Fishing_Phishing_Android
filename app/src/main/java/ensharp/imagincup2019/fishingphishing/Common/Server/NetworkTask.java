@@ -179,7 +179,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                                 time = "PM " + date_split[3];
                             }
                             String period = tempObject.getString("period");
-                      
+
                             for(int index=0; index<logList.size(); index++){
                                 if(logList.get(index).getPhoneNumber().equals(opponent_phone_num)){
                                     logList.get(index).getAccuracyList().add(accuracy);
