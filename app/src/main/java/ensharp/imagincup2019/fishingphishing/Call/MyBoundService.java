@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.CallActivity;
@@ -148,6 +149,7 @@ public class MyBoundService extends Service {
                 .setContentIntent(PendingIntent.getActivity(this, 0,
                         new Intent(this, CallActivity.class),0));
         notificationManager.notify(nId, builder.build());
+
     }
 
     // kills the notification

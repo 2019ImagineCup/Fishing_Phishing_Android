@@ -1,5 +1,7 @@
 package ensharp.imagincup2019.fishingphishing.Common.VO;
 
+import java.util.ArrayList;
+
 public class CallLogVO {
 
     private String phoneNumber;
@@ -9,8 +11,20 @@ public class CallLogVO {
     private String category;
     private String period;
     private String record;
+    private String accuracy;
     private AnalysisVO analysis;
     private int tag;
+    ArrayList<String> accuracyList;
+
+    public CallLogVO(String phoneNumber, String detail, String date, String time,String period, String category,ArrayList<String> _accuracyList) {
+        this.phoneNumber = phoneNumber;
+        this.detail = detail; // phoneType(수신/발신/부재중 등)
+        this.date = date;
+        this.time = time;
+        this.category = category;   // callType(수신/발신/부재중 등)
+        this.period = period;       // duration
+        this.accuracyList = _accuracyList;
+    }
 
     public CallLogVO(String phoneNumber, String detail, String date, String time, String category, String period, String record, AnalysisVO analysis) {
         this.phoneNumber = phoneNumber;
@@ -61,6 +75,10 @@ public class CallLogVO {
     public String getRecord() {
         return record;
     }
+
+    public String getAccuracy() { return accuracy; }
+
+    public ArrayList<String> getAccuracyList() { return accuracyList; }
 
     public AnalysisVO getAnalysis() {
         return analysis;

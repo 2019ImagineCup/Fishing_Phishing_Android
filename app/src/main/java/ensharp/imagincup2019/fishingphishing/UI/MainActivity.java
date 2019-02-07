@@ -98,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+
+
     }
 
     public void setBottomButtons(int position) {
@@ -120,37 +123,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-    private ChildEventListener databaseEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.e("Data",dataSnapshot.getValue().toString());
-            HashMap<String, Object> hash = (HashMap) dataSnapshot.getValue();
-            Log.e("my_phone_num",hash.get("my_phone_num").toString());
-            Log.e("opponent_phone_num",hash.get("opponent_phone_num").toString());
-            Log.e("text",hash.get("text").toString());
-            Log.e("flag",hash.get("flag").toString());
-            Log.e("accuracy",hash.get("accuracy").toString());
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.e("change",dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            Log.e("remove",dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.e("move",dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
 }

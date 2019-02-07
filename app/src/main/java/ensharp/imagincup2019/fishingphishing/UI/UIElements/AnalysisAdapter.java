@@ -1,6 +1,7 @@
 package ensharp.imagincup2019.fishingphishing.UI.UIElements;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,7 @@ import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
+import com.github.mikephil.charting.charts.LineChart;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.LogFragment;
+import ensharp.imagincup2019.fishingphishing.UI.Graph.LineGraph;
 
 public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHolder> {
 
@@ -64,9 +67,10 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
         holder.period.setText(item.getPeriod());
 
         if (item.getCategory().equals("부재중 전화")) {
-            holder.play.setVisibility(View.INVISIBLE);
             holder.buttonLayout.setVisibility(View.INVISIBLE);
         }
+
+
 
         holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
         holder.expandableLayout.setInRecyclerView(true);
@@ -123,7 +127,6 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
         public TextView time;
         public TextView category;
         public TextView period;
-        public ImageView play;
         public RelativeLayout buttonLayout;
         public SwipeLayout swipeLayout;
         public Button deleteButton;
@@ -140,11 +143,14 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
             time = view.findViewById(R.id.time);
             category = view.findViewById(R.id.category);
             period = view.findViewById(R.id.period);
-            play = view.findViewById(R.id.play);
             buttonLayout = view.findViewById(R.id.button);
             expandableLayout = view.findViewById(R.id.expandableLayout);
             swipeLayout = view.findViewById(R.id.swipe);
             deleteButton = view.findViewById(R.id.delete);
+
+//            LineChart line = (LineChart)expandableLayout.findViewById(R.id.chart);
+//            LineGraph lineGraph = new LineGraph(line);
+//            lineGraph.setLineChart();
         }
     }
 

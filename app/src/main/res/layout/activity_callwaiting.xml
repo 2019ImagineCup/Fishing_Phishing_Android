@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/phone_number"
@@ -35,7 +34,6 @@
                 android:layout_width="@dimen/call_fragment_button_size"
                 android:layout_height="@dimen/call_fragment_button_size"
                 android:layout_gravity="center"
-                android:src="@drawable/item_refuse"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"/>
 
@@ -62,7 +60,6 @@
                 android:layout_width="@dimen/call_fragment_button_size"
                 android:layout_height="@dimen/call_fragment_button_size"
                 android:layout_gravity="center"
-                android:src="@drawable/item_get"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"/>
 

@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Database.DatabaseManager;
 import ensharp.imagincup2019.fishingphishing.Database.Model.HistoryItem;
 import ensharp.imagincup2019.fishingphishing.UI.UIElements.GlideApp;
@@ -93,10 +94,12 @@ public class CallFragment extends Fragment {
     }
 
     private long getDuration(String duration) {
-        long minute = Long.parseLong(duration.substring(0, duration.indexOf(":")));
-        long second = Long.parseLong(duration.substring(duration.indexOf(":") + 1));
-
-        return minute * 60 + second;
+        if(duration.contains(":")) {
+            long minute = Long.parseLong(duration.substring(0, duration.indexOf(":")));
+            long second = Long.parseLong(duration.substring(duration.indexOf(":") + 1));
+            return minute * 60 + second;
+        }
+        return 0;
     }
 
     private View.OnTouchListener onCallTouchListener = new View.OnTouchListener() {
@@ -132,6 +135,7 @@ public class CallFragment extends Fragment {
                         }
 
                         intent = new Intent(getActivity(), CallActivity.class);
+                        Constants.call_type = "outgoing";
                         intent.putExtra("number", phoneNumber.getText().toString());
                         break;
                     default:

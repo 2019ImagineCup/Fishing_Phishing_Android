@@ -59,7 +59,7 @@ public class CallHistoryInformationAdapter extends BaseSwipeAdapter {
 
         phoneNumber.setText(currentCall.number);
 //        detail.setText(currentCall.getPhoneType());
-        detail.setText("휴대전화");
+        detail.setText("Phone Number");
         setDisplayedTime(currentCall);
 
         final SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(getSwipeLayoutResourceId(position));

@@ -24,6 +24,8 @@ import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ import ensharp.imagincup2019.fishingphishing.Common.Constants;
 import ensharp.imagincup2019.fishingphishing.Common.VO.CallLogVO;
 import ensharp.imagincup2019.fishingphishing.R;
 import ensharp.imagincup2019.fishingphishing.UI.Fragments.LogFragment;
+import ensharp.imagincup2019.fishingphishing.UI.Graph.LineGraph;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class StickyAdapter extends BaseAdapter implements StickyListHeadersAdapter, SectionIndexer {
@@ -111,11 +114,21 @@ public class StickyAdapter extends BaseAdapter implements StickyListHeadersAdapt
             holder.time = (TextView) convertView.findViewById(R.id.time);
             holder.category = (TextView) convertView.findViewById(R.id.category);
             holder.period = (TextView) convertView.findViewById(R.id.period);
-            holder.play = (ImageView) convertView.findViewById(R.id.play);
             holder.buttonLayout = (RelativeLayout) convertView.findViewById(R.id.button);
             holder.swipeLayout = (SwipeLayout) convertView.findViewById(R.id.swipe);
             holder.deleteButton = (Button) convertView.findViewById(R.id.delete);
             holder.expandableLayout = (ExpandableLinearLayout) convertView.findViewById(R.id.expandableLayout);
+
+            LineChart line = (LineChart)holder.expandableLayout.findViewById(R.id.chart);
+            LineGraph lineGraph = new LineGraph(line);
+            List<Entry> entries = new ArrayList<>();
+
+            for(int i=0 ; i < logList.get(position).getAccuracyList().size() ; i++){
+                entries.add(new Entry(i+1, Float.parseFloat(logList.get(position).getAccuracyList().get(i))));
+            }
+
+            lineGraph.setLineChart(entries);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -127,7 +140,6 @@ public class StickyAdapter extends BaseAdapter implements StickyListHeadersAdapt
         holder.period.setText(logList.get(position).getPeriod());
 
         if (logList.get(position).getCategory().equals("부재중 전화")) {
-            holder.play.setVisibility(View.INVISIBLE);
             holder.buttonLayout.setVisibility(View.INVISIBLE);
         }
 
@@ -239,7 +251,6 @@ public class StickyAdapter extends BaseAdapter implements StickyListHeadersAdapt
         public TextView time;
         public TextView category;
         public TextView period;
-        public ImageView play;
         public RelativeLayout buttonLayout;
         public SwipeLayout swipeLayout;
         public Button deleteButton;
