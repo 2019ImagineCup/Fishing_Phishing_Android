@@ -67,7 +67,6 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
         holder.period.setText(item.getPeriod());
 
         if (item.getCategory().equals("부재중 전화")) {
-            holder.play.setVisibility(View.INVISIBLE);
             holder.buttonLayout.setVisibility(View.INVISIBLE);
         }
 
@@ -128,7 +127,6 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
         public TextView time;
         public TextView category;
         public TextView period;
-        public ImageView play;
         public RelativeLayout buttonLayout;
         public SwipeLayout swipeLayout;
         public Button deleteButton;
@@ -145,15 +143,14 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
             time = view.findViewById(R.id.time);
             category = view.findViewById(R.id.category);
             period = view.findViewById(R.id.period);
-            play = view.findViewById(R.id.play);
             buttonLayout = view.findViewById(R.id.button);
             expandableLayout = view.findViewById(R.id.expandableLayout);
             swipeLayout = view.findViewById(R.id.swipe);
             deleteButton = view.findViewById(R.id.delete);
 
-            LineChart line = (LineChart)expandableLayout.findViewById(R.id.chart);
-            LineGraph lineGraph = new LineGraph(line);
-            lineGraph.setLineChart();
+//            LineChart line = (LineChart)expandableLayout.findViewById(R.id.chart);
+//            LineGraph lineGraph = new LineGraph(line);
+//            lineGraph.setLineChart();
         }
     }
 

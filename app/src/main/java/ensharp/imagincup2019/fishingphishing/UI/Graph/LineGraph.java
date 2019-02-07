@@ -18,23 +18,16 @@ import java.util.List;
 public class LineGraph {
 
     LineChart lineChart;
-//    List<Entry> entries;
+    List<Entry> entries;
 
     public LineGraph(LineChart _lineChart){
         this.lineChart = _lineChart;
     }
 
-    public void setLineChart(){
-//        entries = _entries;
-        List<Entry> entries = new ArrayList<>();
+    public void setLineChart(List<Entry> _entries){
+        entries = _entries;
 
-        entries.add(new Entry(1, 1));
-        entries.add(new Entry(2, 2));
-        entries.add(new Entry(3, 0));
-        entries.add(new Entry(4, 4));
-        entries.add(new Entry(5, 3));
-
-        LineDataSet lineDataSet = new LineDataSet(entries, "속성명1");
+        LineDataSet lineDataSet = new LineDataSet(entries, "Accuracy");
         lineDataSet.setLineWidth(2);
         lineDataSet.setCircleRadius(6);
         lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
@@ -52,15 +45,27 @@ public class LineGraph {
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.BLACK);
-        xAxis.enableGridDashedLine(8, 24, 0);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAxisMinimum(1);
+        xAxis.setAxisMaximum(5);
+        xAxis.mAxisRange = 5;
+        xAxis.setSpaceMin(1);
+        xAxis.setSpaceMax(1);
+        xAxis.setGranularity(1);
 
         YAxis yLAxis = lineChart.getAxisLeft();
         yLAxis.setTextColor(Color.BLACK);
+        yLAxis.setDrawLabels(true);
+        yLAxis.setDrawAxisLine(false);
+        yLAxis.setDrawGridLines(false);
+        yLAxis.setAxisMinimum(0);
+        yLAxis.setAxisMaximum(1);
+        yLAxis.setGranularity(Float.parseFloat("0.25"));
 
         YAxis yRAxis = lineChart.getAxisRight();
-        yRAxis.setDrawLabels(false);
         yRAxis.setDrawAxisLine(false);
         yRAxis.setDrawGridLines(false);
+        yRAxis.setDrawLabels(false);
 
         Description description = new Description();
         description.setText("");

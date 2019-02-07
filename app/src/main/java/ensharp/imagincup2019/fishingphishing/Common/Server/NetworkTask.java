@@ -160,6 +160,7 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                     if(!resultResponse.equals("fail")){
                         JSONObject tempObject;
                         for (int i=0; i < resultObjectArray.length(); i++) {
+                            int flag = 0;
                             tempObject = resultObjectArray.getJSONObject(i);
                             String my_phone_num = tempObject.getString("my_phone_num");
                             String opponent_phone_num = tempObject.getString("opponent_phone_num");
@@ -178,11 +179,24 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                                 time = "PM " + date_split[3];
                             }
                             String period = tempObject.getString("period");
-                            String[] period_split = period.split(":");
-                            //String period_text = period_split[0]+"min "+ period_split[1]+"sec";
-                            CallLogVO callLogVO = new CallLogVO(opponent_phone_num,type,date_text,time,period,type);
+                      
+                            for(int index=0; index<logList.size(); index++){
+                                if(logList.get(index).getPhoneNumber().equals(opponent_phone_num)){
+                                    logList.get(index).getAccuracyList().add(accuracy);
+                                    flag = 1;
+                                    break;
+                                }
+                            }
+
+                            if(flag == 1) {
+                                continue;
+                            }
+                            ArrayList<String> accuracyList = new ArrayList<>();
+                            accuracyList.add(accuracy);
+                            CallLogVO callLogVO = new CallLogVO(opponent_phone_num,type,date_text,time,period,type,accuracyList);
                             logList.add(callLogVO);
                         }
+
 
                         constants.setLogs(logList);
 //                        setLogList(tabLayout.getCurrentTab());

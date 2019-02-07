@@ -97,6 +97,9 @@ public class CallActivity extends AppCompatActivity {
     private Boolean isNotified = false;
 
     private String id;
+    private boolean server_flag = false;
+    private boolean server_flag2 = false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,8 +108,6 @@ public class CallActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initImages();
-//        initFirebase();
-
         Intent intent = getIntent();
         createConfig();
         clearTextBox();
@@ -124,38 +125,7 @@ public class CallActivity extends AppCompatActivity {
                 }
             }
         });
-
         GlideApp.with(getApplicationContext()).load(R.drawable.item_refuse).into(recognizeContinuousButton);
-    }
-
-    private void initFirebase() {
-        database = FirebaseDatabase.getInstance().getReference();
-//        accuracyRef = database.child("call").child("call_list");
-        accuracyRef = database.child("id");
-//        myRef = database.child("call");
-        accuracyRef.child("id"+Constants.id).child("accuracy").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("Under_id", String.valueOf(dataSnapshot));
-                HashMap<String,String> hash = (HashMap<String, String>)dataSnapshot.getValue();
-                Log.e("hash",String.valueOf(hash.get("accuracy")));
-                String ac = hash.get("accuracy");
-//                        Long ac = dataSnapshot.getValue(Long.class);
-
-                accuracy = String.valueOf(ac);
-
-                setAccuracyText(accuracy);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-//        accuracyRef = database.child("id");
-//        accuracyRef.addListenerForSingleValueEvent();
-//        accuracyRef.child(Constants.id).addListenerForSingleValueEvent();
-//        accuracyRef.addListenerForSingleValueEvent(onAccuracyChangedListener);
     }
 
     private void initStopWatch() {
@@ -166,23 +136,6 @@ public class CallActivity extends AppCompatActivity {
         contextWrapper.startService(watchIntent);
 
         this.bindService(new Intent(this, MyBoundService.class), serviceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void setAccuracyText(String rawValue) {
-        double value = Double.parseDouble(rawValue) * 100;
-
-        Log.e("value",String.valueOf(value));
-
-        if (value < 70)
-            return;
-        else {
-            notificationLayout.setVisibility(View.VISIBLE);
-            alarm_vibrator();
-        }
-
-        String announcement = value + "% chance of voice phishing!";
-
-        accuracyText.setText(announcement);
     }
 
     private void startCallService() {
@@ -203,12 +156,18 @@ public class CallActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             status.setText(stopWatch.getString());
-                            if (isNotified) {
-                            }
+
                         }
                     });
                     try {
                         Thread.sleep(1);
+                        if(Integer.parseInt(String.valueOf(status.getText()).substring(0,1) + String.valueOf(status.getText()).substring(3)) != 0 ){
+                            if(Integer.parseInt(String.valueOf(status.getText()).substring(3)) % 5 == 0) {
+                                Log.e("로그","!");
+                                request_server(Constants.SEND_TEXT_CALL_MIDDLE);
+                                Thread.sleep(1000);
+                            }
+                        }
                     } catch (Exception e) {
                         return;
                     }
@@ -248,12 +207,15 @@ public class CallActivity extends AppCompatActivity {
                 break;
             case Constants.SEND_TEXT_CALL_MIDDLE:
                 url = "http://52.175.215.193/update";
-                if (content.size() % 3 == 0) {
-                    data = send_Data_Call_Middle("01012341234",number.getText().toString(),TextUtils.join(" ", content.subList(0, content.size() - 1)), "1");
-                    networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT,accuracyText,notificationLayout);
-                    networkTask.execute();
-                    isSecured = true;
-                }
+//                if (content.size() % 3 == 0) {
+//                    data = send_Data_Call_Middle("01012341234",number.getText().toString(),TextUtils.join(" ", content.subList(0, content.size() - 1)), "1");
+//                    networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT,accuracyText,notificationLayout);
+//                    networkTask.execute();
+//                    isSecured = true;
+//                }
+                data = send_Data_Call_Middle("01012341234", number.getText().toString(), TextUtils.join(" ", content.subList(0, content.size())), "1");
+                networkTask = new NetworkTask(getApplicationContext(), url, data, Constants.REQUEST_POST, Constants.SEND_TEXT, accuracyText, notificationLayout);
+                networkTask.execute();
                 break;
             case Constants.SEND_TEXT_CALL_END:
                 url = "http://52.175.215.193/update";
@@ -316,7 +278,6 @@ public class CallActivity extends AppCompatActivity {
 
     private void displayException(Exception ex) {
         recognizedTextView.setText(ex.getMessage() + System.lineSeparator() + TextUtils.join(System.lineSeparator(), ex.getStackTrace()));
-
     }
 
     private void clearTextBox() {
@@ -398,6 +359,7 @@ public class CallActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        updating = false;
         finishActivity();
         if (serviceConnection != null) {
             unbindService(serviceConnection);
@@ -441,7 +403,8 @@ public class CallActivity extends AppCompatActivity {
                 Log.i(logTag, "Final result received: " + s);
                 content.add(s);
                 setRecognizedText(TextUtils.join(" ", content));
-                request_server(Constants.SEND_TEXT_CALL_MIDDLE);
+                Log.e("status",String.valueOf(status.getText()).substring(3));
+//                request_server(Constants.SEND_TEXT_CALL_MIDDLE);
             });
 
             final Future<Void> task = reco.startContinuousRecognitionAsync();
@@ -495,3 +458,5 @@ public class CallActivity extends AppCompatActivity {
         vibrator.vibrate(2000);
     }
 }
+
+

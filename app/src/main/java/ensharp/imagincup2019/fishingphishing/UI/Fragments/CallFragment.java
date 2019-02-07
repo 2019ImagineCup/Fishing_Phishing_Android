@@ -94,10 +94,12 @@ public class CallFragment extends Fragment {
     }
 
     private long getDuration(String duration) {
-        long minute = Long.parseLong(duration.substring(0, duration.indexOf(":")));
-        long second = Long.parseLong(duration.substring(duration.indexOf(":") + 1));
-
-        return minute * 60 + second;
+        if(duration.contains(":")) {
+            long minute = Long.parseLong(duration.substring(0, duration.indexOf(":")));
+            long second = Long.parseLong(duration.substring(duration.indexOf(":") + 1));
+            return minute * 60 + second;
+        }
+        return 0;
     }
 
     private View.OnTouchListener onCallTouchListener = new View.OnTouchListener() {
