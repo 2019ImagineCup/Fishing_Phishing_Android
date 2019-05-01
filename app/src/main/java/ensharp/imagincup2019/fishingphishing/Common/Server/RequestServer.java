@@ -31,8 +31,8 @@ public class RequestServer {
             HttpURLConnection conn = (HttpURLConnection) urlObject.openConnection();
 
 
-            conn.setReadTimeout(150000); //10초동안 서버로부터 반응없으면 에러
-            conn.setConnectTimeout(15000); // 접속하는 커넥션 타임 15초동안 접속안되면 접속 안되는 것으로 간주
+//            conn.setReadTimeout(150000); //10초동안 서버로부터 반응없으면 에러
+//            conn.setConnectTimeout(15000); // 접속하는 커넥션 타임 15초동안 접속안되면 접속 안되는 것으로 간주
 
 
             conn.setRequestMethod("POST");

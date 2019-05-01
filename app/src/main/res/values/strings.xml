@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FishingPhishing</string>
+    <string name="app_name">Fishing Phishing</string>
 
     <string name="recents_fragment_name">Recent Suspicious Calls</string>
     <string name="recents_fragment_all">All</string>
