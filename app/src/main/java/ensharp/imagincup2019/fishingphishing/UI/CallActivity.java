@@ -68,6 +68,8 @@ public class CallActivity extends AppCompatActivity {
     private static final String SpeechSubscriptionKey = "5d59cc81db784d00b1a5c830815404d4";
     private static final String SpeechRegion = "westus";
 
+    private String sendTime = "";
+
     @BindView(R.id.container) FrameLayout container;
     @BindView(R.id.recognize_button) ImageButton recognizeContinuousButton;
     @BindView(R.id.recognized_text) TextView recognizedTextView;
@@ -88,7 +90,6 @@ public class CallActivity extends AppCompatActivity {
     private ArrayList<String> content = new ArrayList<>();
 
     private MyBoundService.MyBinder stopWatch = null;
-    public boolean updating = true;
 
     private Integer current_list_num = -1;
     private String accuracy;
@@ -106,6 +107,8 @@ public class CallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
         ButterKnife.bind(this);
+
+        Constants.updating = true;
 
         initImages();
         Intent intent = getIntent();
@@ -140,7 +143,7 @@ public class CallActivity extends AppCompatActivity {
 
     private void startCallService() {
         stopWatch.start();
-        updating = true;
+
         updateThread();
         stopWatch.startNotify();
 
@@ -152,27 +155,47 @@ public class CallActivity extends AppCompatActivity {
     public void updateThread() {
         new Thread(new Runnable () {
             public void run() {
-                while(updating) {
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            status.setText(stopWatch.getString());
-
-                        }
-                    });
+                while (Constants.updating) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        status.setText(stopWatch.getString());
+                    }
+                });
                     try {
                         Thread.sleep(1);
-                        if(Integer.parseInt(String.valueOf(status.getText()).substring(0,1) + String.valueOf(status.getText()).substring(3)) != 0 ){
-                            if(Integer.parseInt(String.valueOf(status.getText()).substring(3)) % 5 == 0) {
-                                Log.e("로그","!");
+                        if (Integer.parseInt(String.valueOf(status.getText()).substring(0, 1) + String.valueOf(status.getText()).substring(3)) != 0) {
+
+//                            if (String.valueOf(status.getText()).substring(3).compareTo(sendTime) > 0) {
+//                                if(Integer.parseInt(String.valueOf(status.getText()).substring(3)) % 5 == 0) {
+//                                    Log.e("로그","!");
+//                                    request_server(Constants.SEND_TEXT_CALL_MIDDLE);
+//                                    sendTime = String.valueOf(status.getText()).substring(3);
+//                                }
+//                            }
+
+                            if (Integer.parseInt(String.valueOf(status.getText()).substring(3)) % 10 == 0) {
+
+                                // 예진이 수정
+//                                Log.e("로그","!");
+//
+//                                if (String.valueOf(status.getText()).compareTo(sendTime) > 0) {
+//                                    Log.e("예진", String.valueOf(status.getText()));
+//                                    request_server(Constants.SEND_TEXT_CALL_MIDDLE);
+//                                    sendTime = String.valueOf(status.getText()).substring(3);
+//                                }
+
+                                Log.e("time", String.valueOf(status.getText()));
                                 request_server(Constants.SEND_TEXT_CALL_MIDDLE);
                                 Thread.sleep(1000);
                             }
                         }
+
                     } catch (Exception e) {
                         return;
                     }
                 }
             }
+
         }).start();
     }
 
@@ -214,11 +237,13 @@ public class CallActivity extends AppCompatActivity {
 //                    isSecured = true;
 //                }
                 data = send_Data_Call_Middle("01012341234", number.getText().toString(), TextUtils.join(" ", content.subList(0, content.size())), "1");
+                Log.e("Middle","Middle");
                 networkTask = new NetworkTask(getApplicationContext(), url, data, Constants.REQUEST_POST, Constants.SEND_TEXT, accuracyText, notificationLayout);
                 networkTask.execute();
                 break;
             case Constants.SEND_TEXT_CALL_END:
                 url = "http://52.175.215.193/update";
+                Log.e("End","End");
                 data = send_Data_Call_End("01012341234",number.getText().toString(),recognizedTextView.getText().toString(),"2");
                 networkTask = new NetworkTask(getApplicationContext(),url,data,Constants.REQUEST_POST,Constants.SEND_TEXT,accuracyText,notificationLayout);
                 networkTask.execute();
@@ -359,7 +384,6 @@ public class CallActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        updating = false;
         finishActivity();
         if (serviceConnection != null) {
             unbindService(serviceConnection);
@@ -378,6 +402,7 @@ public class CallActivity extends AppCompatActivity {
         setResult(Activity.RESULT_OK, new Intent().putExtra("number", number.getText().toString()).putExtra("duration", duration)
                                                                 .putExtra("date", currentTime.toString()));
 
+        Constants.updating = false;
 
         finish();
     }
@@ -452,11 +477,6 @@ public class CallActivity extends AppCompatActivity {
         return false;
     }
 
-    //진동
-    private void alarm_vibrator(){
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(2000);
-    }
 }
 
 

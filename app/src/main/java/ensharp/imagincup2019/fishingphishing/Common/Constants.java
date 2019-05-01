@@ -65,4 +65,6 @@ public class Constants {
     public static final int GET_LOG_LIST = 1003;
     public static String id = "0";
     public static String call_type = "";
+
+    public static boolean updating;
 }

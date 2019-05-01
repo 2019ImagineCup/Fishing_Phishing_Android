@@ -282,7 +282,8 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
             return;
         else {
             notificationLayout.setVisibility(View.VISIBLE);
-            alarm_vibrator();
+            if(Constants.updating)
+                alarm_vibrator();
         }
 
         String announcement = value + "% chance of voice phishing!";
